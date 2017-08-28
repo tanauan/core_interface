@@ -1,5 +1,5 @@
-#ifndef SC_TB
-#define sc_tb
+#ifndef SC_TB_CORE_INTERFACE
+#define sc_tb_core_interface
 
 
 #include <systemc.h>
@@ -7,8 +7,6 @@
 
 //MODULES VHDL
 #include "core_interface.h"
-
-// #include "lane_reorder.h"
 
 SC_MODULE(Top) {
   sc_clock clk_156;

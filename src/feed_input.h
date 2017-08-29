@@ -13,10 +13,10 @@
 #define TEST_CASE 1		// Specify the folder to get the files from
 // TODO: test cases 2, 3, 4, etc.
 
-SC_MODULE(FEED_INPUT) {
+SC_MODULE(feed_input) {
 
-  sc_in<sc_logic>   clock_in;
-  sc_in<sc_logic>   reset_in;
+  sc_in<sc_logic>   clock;
+  sc_in<sc_logic>   reset_n;
 
   sc_out<sc_lv<64 > > data_out_0;
   sc_out<sc_lv<8 > >  control_out_0;
@@ -61,7 +61,7 @@ SC_MODULE(FEED_INPUT) {
     sc_lv<8 >  control_out_3_int;
     sc_lv<64 > data_out_3_int;
 
-    if (reset_in == SC_LOGIC_1) {       // RESET ativo baixo
+    if (reset == SC_LOGIC_1) {       // RESET ativo baixo
         if( lanes[0].is_open() ) {
           if( lanes[0] >> line0 ) {
 			// parse <control>-<data>
@@ -176,7 +176,7 @@ SC_MODULE(FEED_INPUT) {
 
     SC_METHOD(buffer_lanes);
     dont_initialize();
-    sensitive<<clock_in.pos();
+    sensitive<<clock.pos();
   }
 
   ~FEED_INPUT () {

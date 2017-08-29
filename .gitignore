@@ -1,1 +1,4 @@
 work/*
+work/_*
+vsim.wlf
+transcript

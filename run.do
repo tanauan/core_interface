@@ -21,5 +21,6 @@ sccom -link -B/usr/bin/
 
 vsim -novopt work.Top -t 1ps
 
-do wave.do
+#do wave.do
+do wave_sc1.do
 run 1000 ns

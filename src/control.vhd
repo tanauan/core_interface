@@ -178,14 +178,14 @@ begin
     -- SOP
     if sop_location /= "1000" and eop_location = "00100000" then
       case sop_location is
-        when "0000" => shift_calc <= "001";
-        when "0001" => shift_calc <= "010";
-        when "0010" => shift_calc <= "011";
-        when "0011" => shift_calc <= "100";
-        when "0100" => shift_calc <= "101";
-        when "0101" => shift_calc <= "110";
-        when "0110" => shift_calc <= "111";
-        when "0111" => shift_calc <= "000";
+        when "0000" => shift_calc <= "010"; -- TESTE
+        when "0001" => shift_calc <= "011";
+        when "0010" => shift_calc <= "100";
+        when "0011" => shift_calc <= "101";
+        when "0100" => shift_calc <= "110";
+        when "0101" => shift_calc <= "111";
+        when "0110" => shift_calc <= shift_out_int;
+        when "0111" => shift_calc <= shift_out_int;
         when others => null;
       end case;
     -- SOP & EOP

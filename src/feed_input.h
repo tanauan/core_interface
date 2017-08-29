@@ -10,8 +10,7 @@
 
 #define PICK_RANDOM_ORDER 0
 
-#define TEST_CASE 1		// Specify the folder to get the files from
-// TODO: test cases 2, 3, 4, etc.
+#define TEST_CASE 3		// Specify the folder to get the files from
 
 SC_MODULE(feed_input) {
 
@@ -140,39 +139,65 @@ SC_MODULE(feed_input) {
 
 	if(TEST_CASE == 1) {
 		lanes[0].open("sc1/dump_mii_rx_0.txt");
-	}	// TODO: else cases
-    if (lanes[0].is_open()){
-      cout << "[FEED_INPUT] File lanes[0].txt opened." << endl;
-    } else {
-      cout << "[FEED_INPUT] ERROR opening lanes[0].txt" << endl;
-    }
+	}	else if(TEST_CASE == 2) {
+    lanes[0].open("sc2/dump_mii_rx_0.txt");
+  } else if(TEST_CASE == 3) {
+    lanes[0].open("sc3/dump_mii_rx_0.txt");
+  } else {
+    lanes[0].open("sc4/dump_mii_rx_0.txt");
+  }
+
+  if (lanes[0].is_open()){
+    cout << "[FEED_INPUT] File lanes[0].txt opened." << endl;
+  } else {
+    cout << "[FEED_INPUT] ERROR opening lanes[0].txt" << endl;
+  }
 
 	if(TEST_CASE == 1) {
 		lanes[1].open("sc1/dump_mii_rx_1.txt");
-	}	// TODO: else cases
+	} else if(TEST_CASE == 2) {
+    lanes[1].open("sc2/dump_mii_rx_1.txt");
+  } else if(TEST_CASE == 3) {
+    lanes[1].open("sc3/dump_mii_rx_1.txt");
+  } else {
+    lanes[1].open("sc4/dump_mii_rx_1.txt");
+  }
+
 	if (lanes[1].is_open()){
-      cout << "[FEED_INPUT] File lanes[1].txt opened." << endl;
-    } else {
-      cout << "[FEED_INPUT] ERROR opening lanes[1].txt" << endl;
-    }
+    cout << "[FEED_INPUT] File lanes[1].txt opened." << endl;
+  } else {
+    cout << "[FEED_INPUT] ERROR opening lanes[1].txt" << endl;
+  }
 
 	if(TEST_CASE == 1) {
 		lanes[2].open("sc1/dump_mii_rx_2.txt");
-	}	// TODO: else cases
-    if (lanes[2].is_open()){
-      cout << "[FEED_INPUT] File lanes[2].txt opened." << endl;
-    } else {
-      cout << "[FEED_INPUT] ERROR opening lanes[2].txt" << endl;
-    }
+	}	else if(TEST_CASE == 2) {
+    lanes[2].open("sc2/dump_mii_rx_2.txt");
+  } else if(TEST_CASE == 3) {
+    lanes[2].open("sc3/dump_mii_rx_2.txt");
+  } else {
+    lanes[2].open("sc4/dump_mii_rx_3.txt");
+  }
+  if (lanes[2].is_open()){
+    cout << "[FEED_INPUT] File lanes[2].txt opened." << endl;
+  } else {
+    cout << "[FEED_INPUT] ERROR opening lanes[2].txt" << endl;
+  }
 
 	if(TEST_CASE == 1) {
 		lanes[3].open("sc1/dump_mii_rx_3.txt");
-	}	// TODO: else cases
-    if (lanes[3].is_open()){
-      cout << "[FEED_INPUT] File lanes[3].txt opened." << endl;
-    } else {
-      cout << "[FEED_INPUT] ERROR opening lanes[3].txt" << endl;
-    }
+	}	else if(TEST_CASE == 2) {
+    lanes[3].open("sc2/dump_mii_rx_3.txt");
+  } else if(TEST_CASE == 3) {
+    lanes[3].open("sc3/dump_mii_rx_3.txt");
+  } else {
+    lanes[3].open("sc4/dump_mii_rx_3.txt");
+  }
+  if (lanes[3].is_open()){
+    cout << "[FEED_INPUT] File lanes[3].txt opened." << endl;
+  } else {
+    cout << "[FEED_INPUT] ERROR opening lanes[3].txt" << endl;
+  }
 
     SC_METHOD(buffer_lanes);
     dont_initialize();

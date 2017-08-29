@@ -33,6 +33,7 @@ architecture behav_control of control is
   signal shift_out_reg_reg : std_logic_vector(2 downto 0);
   signal wen_fifo_reg      : std_logic;
   signal wen_fifo_reg_reg  : std_logic;
+  signal missed_sop        : std_logic;
 
 begin
 
@@ -44,6 +45,7 @@ begin
   sop_finder: process(xgmii_rxc_0, xgmii_rxd_0, xgmii_rxc_1, xgmii_rxd_1,
                       xgmii_rxc_2, xgmii_rxd_2, xgmii_rxc_3, xgmii_rxd_3)
   begin
+      missed_sop <= '0';
       -- MII from PCS 0
       if (xgmii_rxc_0(0) = '1' and xgmii_rxd_0(LANE0) = START) then
         -- SOP on LANE 0 of PCS 0 -> word 0
@@ -75,6 +77,7 @@ begin
       elsif (xgmii_rxc_3(4) = '1' and xgmii_rxd_3(LANE4) = START) then
         -- SOP on LANE 4 of PCS 3 -> word 7
         sop_location <= "0111";
+        missed_sop <= '1';
 
       else
         -- No SOP this time...
@@ -178,14 +181,16 @@ begin
     -- SOP
     if sop_location /= "1000" and eop_location = "00100000" then
       case sop_location is
-        when "0000" => shift_calc <= "010"; -- TESTE
+        when "0000" => shift_calc <= "010";
         when "0001" => shift_calc <= "011";
         when "0010" => shift_calc <= "100";
         when "0011" => shift_calc <= "101";
         when "0100" => shift_calc <= "110";
         when "0101" => shift_calc <= "111";
-        when "0110" => shift_calc <= shift_out_int;
-        when "0111" => shift_calc <= shift_out_int;
+        when "0110" => shift_calc <= "000";
+        when "0111" => shift_calc <= "001";
+        -- For "0111" we will write 1 to shift_calc,
+        -- but WEN will be low only enabling writing on next cycle
         when others => null;
       end case;
     -- SOP & EOP
@@ -223,7 +228,8 @@ begin
       wen_fifo_reg <= '0';
     elsif clk'event and clk = '1' then
       -- SOP: start writing
-      if sop_location /= "1000" and wen_fifo_reg = '0' then
+      if (sop_location /= "1000" or sop_location /= "0111" or sop_location /= "0110"
+          or missed_sop = '1') and wen_fifo_reg = '0' then
         wen_fifo_reg <= '1';
       -- EOP: stop writing
       elsif eop_location /= "00100000" and wen_fifo_reg = '1' then

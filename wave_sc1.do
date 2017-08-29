@@ -74,6 +74,14 @@ add wave -noupdate -expand -group SHIFTER -radix hexadecimal /Top/core_interface
 add wave -noupdate -expand -group SHIFTER -radix hexadecimal /Top/core_interface/shifter/in_1
 add wave -noupdate -expand -group SHIFTER -radix binary /Top/core_interface/shifter/ctrl_reg_shift
 add wave -noupdate -expand -group SHIFTER -radix hexadecimal /Top/core_interface/shifter/out_data
+add wave -noupdate -expand -group FIFO /Top/core_interface/fifo/clk
+add wave -noupdate -expand -group FIFO /Top/core_interface/fifo/rst_n
+add wave -noupdate -expand -group FIFO -radix hexadecimal /Top/core_interface/fifo/write_en
+add wave -noupdate -expand -group FIFO -radix hexadecimal /Top/core_interface/fifo/data_in
+add wave -noupdate -expand -group FIFO -radix hexadecimal /Top/core_interface/fifo/read_en
+add wave -noupdate -expand -group FIFO -radix hexadecimal /Top/core_interface/fifo/data_out
+add wave -noupdate -expand -group FIFO -radix hexadecimal /Top/core_interface/fifo/Empty
+add wave -noupdate -expand -group FIFO -radix hexadecimal /Top/core_interface/fifo/Full
 add wave -noupdate -divider {DUMP OUT}
 add wave -noupdate -group OUT /Top/dump_output/clock
 add wave -noupdate -group OUT /Top/dump_output/reset_n

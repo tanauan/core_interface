@@ -9,6 +9,7 @@ vcom -novopt ./src/defines.vhd
 vcom -novopt ./src/control.vhd
 vcom -novopt ./src/mii_shift_register.vhd
 vcom -novopt ./src/mii_shifter.vhd
+vcom -novopt ./src/fifo.vhd
 vcom -novopt ./src/core_interface.vhd
 
 scgenmod core_interface > src/core_interface.h

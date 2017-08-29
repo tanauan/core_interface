@@ -26,6 +26,9 @@ architecture behav_core_interface of core_interface is
     signal shift_reg_out_0     : std_logic_vector(255 downto 0);
     signal shift_reg_out_1     : std_logic_vector(255 downto 0);
     signal shifter_out         : std_logic_vector(255 downto 0);
+    signal fifo_out            : std_logic_vector(255 downto 0);
+    signal rd                  : std_logic;
+    signal wr                  : std_logic;
 
   begin
 
@@ -68,6 +71,18 @@ architecture behav_core_interface of core_interface is
           in_0            => shift_reg_out_0,
           ctrl_reg_shift  => ctrl_shift_reg,
           out_data        => shifter_out
+    );
+
+    wr <= '1';
+    rd <= '1';
+
+    fifo: entity work.fifo_circular port map(
+          clk             => clk_156,
+          rst_n           => rst_n,
+          data_in         => shifter_out,
+          write_en        => wr,
+          read_en         => rd,
+          data_out        => fifo_out
     );
 
 end behav_core_interface;

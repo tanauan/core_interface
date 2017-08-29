@@ -5,7 +5,7 @@
 #include <systemc.h>
 #include <stdio.h>
 
-//MODULES VHDL
+// VHDL MODULES
 #include "core_interface.h"
 
 SC_MODULE(Top) {

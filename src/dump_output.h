@@ -24,8 +24,7 @@ public:
   void dump();
 
   SC_HAS_PROCESS(dump_output);
-  DUMP_OUTPUT (sc_module_name nm, std::string file_name) : sc_module(nm), file_name(file_name)
-  {
+  dump_output (sc_module_name nm, std::string file_name) : sc_module(nm), file_name(file_name) {
     dump_file.open(file_name.c_str());
     if (dump_file.is_open()){
       cout << "[DUMP_OUTPUT] File "<< file_name << " opened." << endl;
@@ -38,7 +37,7 @@ public:
 
   }
 
-  ~DUMP_OUTPUT() {
+  ~dump_output() {
   }
 };
 

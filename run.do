@@ -13,10 +13,13 @@ vcom -novopt ./src/core_interface.vhd
 
 scgenmod core_interface > src/core_interface.h
 
+sccom ./src/feed_input.cpp
+sccom ./src/dump_output.cpp
+
 sccom -g ./src/sc_tb_core_interface.cpp
 sccom -link -B/usr/bin/
 
-vsim -novopt work.glbl work.Top -t 1ps
+vsim -novopt work.Top -t 1ps
 
 do wave.do
 run 1000 ns

@@ -61,7 +61,7 @@ SC_MODULE(feed_input) {
     sc_lv<8 >  control_out_3_int;
     sc_lv<64 > data_out_3_int;
 
-    if (reset == SC_LOGIC_1) {       // RESET ativo baixo
+    if (reset_n == SC_LOGIC_1) {       // RESET ativo baixo
         if( lanes[0].is_open() ) {
           if( lanes[0] >> line0 ) {
 			// parse <control>-<data>
@@ -136,7 +136,7 @@ SC_MODULE(feed_input) {
   }
 
 
-  SC_CTOR(FEED_INPUT) {
+  SC_CTOR(feed_input) {
 
 	if(TEST_CASE == 1) {
 		lanes[0].open("sc1/dump_mii_rx_0.txt");
@@ -179,7 +179,7 @@ SC_MODULE(feed_input) {
     sensitive<<clock.pos();
   }
 
-  ~FEED_INPUT () {
+  ~feed_input () {
     cout << "End of simulation!" << endl;
     for(int i=0; i < 4; i++) {
       lanes[i].close();

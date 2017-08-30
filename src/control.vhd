@@ -262,6 +262,7 @@ begin
     if (rst_n = '0') then
       shift_out_reg <= (others=>'0');
       shift_out_reg_reg <= (others=>'0');
+      wen_fifo_reg_reg <= '0';
     elsif clk'event and clk = '1' then
       shift_out_reg <= shift_out_int;
       shift_out_reg_reg <= shift_out_reg;

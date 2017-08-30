@@ -74,15 +74,13 @@ add wave -noupdate -expand -group SHIFTER -radix hexadecimal /Top/core_interface
 add wave -noupdate -expand -group SHIFTER -radix hexadecimal /Top/core_interface/shifter/in_1
 add wave -noupdate -expand -group SHIFTER -radix binary /Top/core_interface/shifter/ctrl_reg_shift
 add wave -noupdate -expand -group SHIFTER -radix hexadecimal /Top/core_interface/shifter/out_data
-add wave -noupdate -expand -group FIFO /Top/core_interface/fifo/mem
+add wave -noupdate -expand -group FIFO -radix hexadecimal /Top/core_interface/fifo/mem
 add wave -noupdate -expand -group FIFO /Top/core_interface/fifo/wen
 add wave -noupdate -expand -group FIFO -radix hexadecimal /Top/core_interface/fifo/data_in
 add wave -noupdate -expand -group FIFO /Top/core_interface/fifo/ren
 add wave -noupdate -expand -group FIFO -radix hexadecimal /Top/core_interface/fifo/data_out
 add wave -noupdate -expand -group FIFO -radix hexadecimal /Top/core_interface/fifo/empty
 add wave -noupdate -expand -group FIFO -radix hexadecimal /Top/core_interface/fifo/full
-add wave -noupdate -expand -group FIFO /Top/core_interface/fifo/push
-add wave -noupdate -expand -group FIFO /Top/core_interface/fifo/pop
 add wave -noupdate -divider {DUMP OUT}
 add wave -noupdate -group OUT /Top/dump_output/clock
 add wave -noupdate -group OUT /Top/dump_output/reset_n
@@ -106,4 +104,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {25758 ps} {70567 ps}
+WaveRestoreZoom {472591 ps} {517400 ps}

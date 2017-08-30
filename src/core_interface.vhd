@@ -76,7 +76,7 @@ architecture behav_core_interface of core_interface is
           out_data        => shifter_out
     );
 
-    fifo_ren <= '0'; -- Waiting for mac
+    fifo_ren <= '0', '1' after 300 ns; -- Waiting for mac
     fifo: entity work.ring_fifo port map(
           clk             => clk_156,
           rst_n           => rst_n,

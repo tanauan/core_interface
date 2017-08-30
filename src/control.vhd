@@ -74,6 +74,7 @@ begin
       elsif (xgmii_rxc_3(0) = '1' and xgmii_rxd_3(LANE0) = START) then
         -- SOP on LANE 0 of PCS 3 -> word 6
         sop_location <= "0110";
+        missed_sop <= '1';
       elsif (xgmii_rxc_3(4) = '1' and xgmii_rxd_3(LANE4) = START) then
         -- SOP on LANE 4 of PCS 3 -> word 7
         sop_location <= "0111";
@@ -228,11 +229,13 @@ begin
       wen_fifo_reg <= '0';
     elsif clk'event and clk = '1' then
       -- SOP: start writing
-      if (sop_location /= "1000" or sop_location /= "0111" or sop_location /= "0110"
-          or missed_sop = '1') and wen_fifo_reg = '0' then
+      if (sop_location /= "1000" and sop_location /= "0111" and sop_location /= "0110"
+          and wen_fifo_reg = '0') or missed_sop = '1' then
+          --or missed_sop = '1' and wen_fifo_reg = '0') then
         wen_fifo_reg <= '1';
       -- EOP: stop writing
-      elsif eop_location /= "00100000" and wen_fifo_reg = '1' then
+
+    elsif eop_location /= "00100000" and wen_fifo_reg = '1' then
         wen_fifo_reg <= '0';
 
       end if;
@@ -262,7 +265,6 @@ begin
     if (rst_n = '0') then
       shift_out_reg <= (others=>'0');
       shift_out_reg_reg <= (others=>'0');
-      wen_fifo_reg_reg <= '0';
     elsif clk'event and clk = '1' then
       shift_out_reg <= shift_out_int;
       shift_out_reg_reg <= shift_out_reg;

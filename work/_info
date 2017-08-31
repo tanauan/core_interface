@@ -9,7 +9,7 @@ z2
 cModel Technology
 Z0 d/home/rafasperb/Documentos/core_interface
 Econtrol
-Z1 w1504034992
+Z1 w1504201808
 Z2 DPx4 work 14 interface_defs 0 22 >HRW?fXjV;o]KLeT0HnA<3
 Z3 DPx4 ieee 11 numeric_std 0 22 :ASDNFgHXf_ih3J@9F3Ze1
 Z4 DPx4 ieee 15 std_logic_arith 0 22 [G314=:2zXJ`VORJe1J@Z1
@@ -25,9 +25,9 @@ V^G_7M8Sn9=n=G=o?AgTMV1
 !s100 M8IzVoMBDQaU21[`BBhD>3
 Z10 OL;C;10.3c;59
 32
-Z11 !s110 1504201616
+Z11 !s110 1504203215
 !i10b 1
-Z12 !s108 1504201616.320447
+Z12 !s108 1504203215.261283
 Z13 !s90 -reportprogress|300|-novopt|./src/control.vhd|
 Z14 !s107 ./src/control.vhd|
 !i113 1
@@ -42,8 +42,8 @@ R7
 Z16 DEx4 work 7 control 0 22 ^G_7M8Sn9=n=G=o?AgTMV1
 l38
 L27
-Vb80keHZ`LMOMoPInR>l]B0
-!s100 m?ZG58?GIM>PH@f^R0_]J2
+V9_93hS1>S1A2D`_:_QUH[0
+!s100 kPPRPA28ELF4_Un7@>2ej3
 R10
 32
 R11
@@ -68,13 +68,13 @@ R10
 32
 R11
 !i10b 1
-Z19 !s108 1504201616.494545
+Z19 !s108 1504203215.431903
 Z20 !s90 -reportprogress|300|-novopt|./src/core_interface.vhd|
 Z21 !s107 ./src/core_interface.vhd|
 !i113 1
 R15
 Abehav_core_interface
-Z22 DEx4 work 13 fifo_circular 0 22 4SBaRQmb?`DjeJiQO0^U00
+Z22 DEx4 work 9 ring_fifo 0 22 [6flC3g`X5ICc]R:7HCXb3
 Z23 DEx4 work 11 mii_shifter 0 22 >=3]SJYh<HMmZ9J2=_Zka2
 Z24 DEx4 work 18 mii_shift_register 0 22 GQVBJa=@EkfdlA1^11:E80
 R2
@@ -85,10 +85,10 @@ R16
 R6
 R7
 DEx4 work 14 core_interface 0 22 cIW?XhVE^U8BFdfR?3E4h0
-l33
+l35
 L23
-Vkz0DZT?dH_0VOi:@;gkA71
-!s100 kD1PigMDjF`_89R=5nMho2
+V[fEG>;YPabXzC1zP6<2Wl3
+!s100 DZfW23lTC:`?5BNIdnYVC2
 R10
 32
 R11
@@ -98,49 +98,10 @@ R20
 R21
 !i113 1
 R15
-Efifo_circular
-R1
-R3
-R6
-R7
-R0
-Z25 8./src/fifo.vhd
-Z26 F./src/fifo.vhd
-l0
-L5
-V4SBaRQmb?`DjeJiQO0^U00
-!s100 af@o[7GAoX1Td0MBLiie?0
-R10
-32
-R11
-!i10b 1
-Z27 !s108 1504201616.450716
-Z28 !s90 -reportprogress|300|-novopt|./src/fifo.vhd|
-Z29 !s107 ./src/fifo.vhd|
-!i113 1
-R15
-Abehavioral
-R3
-R6
-R7
-R22
-l24
-L22
-V=;<IfLAVg45lFP;]2Y4YS1
-!s100 cFVcJLL31D=7cMC3[5Cf01
-R10
-32
-R11
-!i10b 1
-R27
-R28
-R29
-!i113 1
-R15
 Pinterface_defs
 R6
 R7
-Z30 w1504025468
+Z25 w1504025468
 R0
 8./src/defines.vhd
 F./src/defines.vhd
@@ -152,18 +113,18 @@ R10
 32
 R11
 !i10b 1
-!s108 1504201616.279936
+!s108 1504203215.219468
 !s90 -reportprogress|300|-novopt|./src/defines.vhd|
 !s107 ./src/defines.vhd|
 !i113 1
 R15
 Emii_shift_register
-R30
+R25
 R6
 R7
 R0
-Z31 8./src/mii_shift_register.vhd
-Z32 F./src/mii_shift_register.vhd
+Z26 8./src/mii_shift_register.vhd
+Z27 F./src/mii_shift_register.vhd
 l0
 L4
 VGQVBJa=@EkfdlA1^11:E80
@@ -172,13 +133,13 @@ R10
 32
 R11
 !i10b 1
-Z33 !s108 1504201616.368031
-Z34 !s90 -reportprogress|300|-novopt|./src/mii_shift_register.vhd|
-Z35 !s107 ./src/mii_shift_register.vhd|
+Z28 !s108 1504203215.310784
+Z29 !s90 -reportprogress|300|-novopt|./src/mii_shift_register.vhd|
+Z30 !s107 ./src/mii_shift_register.vhd|
 !i113 1
 R15
 Abehav_mii_shift_register
-Z36 DEx4 work 7 regnbit 0 22 Mm9=Vzk1F1YBZ1KIFj80a1
+Z31 DEx4 work 7 regnbit 0 22 Mm9=Vzk1F1YBZ1KIFj80a1
 R6
 R7
 R24
@@ -190,18 +151,18 @@ R10
 32
 R11
 !i10b 1
-R33
-R34
-R35
+R28
+R29
+R30
 !i113 1
 R15
 Emii_shifter
-R1
+Z32 w1504034992
 R6
 R7
 R0
-Z37 8./src/mii_shifter.vhd
-Z38 F./src/mii_shifter.vhd
+Z33 8./src/mii_shifter.vhd
+Z34 F./src/mii_shifter.vhd
 l0
 L4
 V>=3]SJYh<HMmZ9J2=_Zka2
@@ -210,9 +171,9 @@ R10
 32
 R11
 !i10b 1
-Z39 !s108 1504201616.410756
-Z40 !s90 -reportprogress|300|-novopt|./src/mii_shifter.vhd|
-Z41 !s107 ./src/mii_shifter.vhd|
+Z35 !s108 1504203215.348042
+Z36 !s90 -reportprogress|300|-novopt|./src/mii_shifter.vhd|
+Z37 !s107 ./src/mii_shifter.vhd|
 !i113 1
 R15
 Abehav_mii_shifter
@@ -227,18 +188,18 @@ R10
 32
 R11
 !i10b 1
-R39
-R40
-R41
+R35
+R36
+R37
 !i113 1
 R15
 Ereg_bit
-R30
+R25
 R6
 R7
 R0
-Z42 8./src/register.vhd
-Z43 F./src/register.vhd
+Z38 8./src/register.vhd
+Z39 F./src/register.vhd
 l0
 L36
 V:Q50jM`=XOijMT?gUc=Hz2
@@ -247,9 +208,9 @@ R10
 32
 R11
 !i10b 1
-Z44 !s108 1504201616.224423
-Z45 !s90 -reportprogress|300|-novopt|./src/register.vhd|
-Z46 !s107 ./src/register.vhd|
+Z40 !s108 1504203215.159756
+Z41 !s90 -reportprogress|300|-novopt|./src/register.vhd|
+Z42 !s107 ./src/register.vhd|
 !i113 1
 R15
 Areg
@@ -264,18 +225,18 @@ R10
 32
 R11
 !i10b 1
-R44
-R45
-R46
+R40
+R41
+R42
 !i113 1
 R15
 Eregnbit
-R30
+R25
 R6
 R7
 R0
-R42
-R43
+R38
+R39
 l0
 L7
 VMm9=Vzk1F1YBZ1KIFj80a1
@@ -284,15 +245,15 @@ R10
 32
 R11
 !i10b 1
-R44
-R45
-R46
+R40
+R41
+R42
 !i113 1
 R15
 Aregn
 R6
 R7
-R36
+R31
 l17
 L16
 VPL1:Vg09n?l2Ea[:KXSbM3
@@ -301,9 +262,52 @@ R10
 32
 R11
 !i10b 1
-R44
+R40
+R41
+R42
+!i113 1
+R15
+Ering_fifo
+R1
+R3
+R4
+R5
+R6
+R7
+R0
+Z43 8./src/ring_fifo.vhd
+Z44 F./src/ring_fifo.vhd
+l0
+L6
+V[6flC3g`X5ICc]R:7HCXb3
+!s100 Jm3NhH_@0I[7HM67Vzf]U2
+R10
+32
+R11
+!i10b 1
+Z45 !s108 1504203215.384672
+Z46 !s90 -reportprogress|300|-novopt|./src/ring_fifo.vhd|
+Z47 !s107 ./src/ring_fifo.vhd|
+!i113 1
+R15
+Abehav
+R3
+R4
+R5
+R6
+R7
+R22
+l32
+L24
+VX>FT9a6YMJKNlSY?3hTg70
+!s100 fBdm@>C7TCK[QUZ384EY11
+R10
+32
+R11
+!i10b 1
 R45
 R46
+R47
 !i113 1
 R15
 sTop

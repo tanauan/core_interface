@@ -10,9 +10,8 @@ case =3
 n=3
 
 
-#import sys
-#case = sys.argv[0]
-
+import sys
+case = sys.argv[1]
 
 #   case 1 = start lane0H
 #   case 2 = start lane0L
@@ -29,10 +28,10 @@ PRE =  '10101010101010101010101010101010101010101010101010101011' #0xaaaaaaaaaaa
 DATA = '11001100' #0xCC control = 0
 IDLE = '00000111' #0x07 control = 1
 
-dump0 = open('dump_mii_rx_0.txt', 'w')
-dump1 = open('dump_mii_rx_1.txt', 'w')
-dump2 = open('dump_mii_rx_2.txt', 'w')
-dump3 = open('dump_mii_rx_3.txt', 'w')
+dump0 = open('test_cases/dump_mii_rx_0.txt', 'w')
+dump1 = open('test_cases/dump_mii_rx_1.txt', 'w')
+dump2 = open('test_cases/dump_mii_rx_2.txt', 'w')
+dump3 = open('test_cases/dump_mii_rx_3.txt', 'w')
 
 #####################  ROTINA DE IDLE INICIAL ###############################################
 #############################################################################################
@@ -59,7 +58,7 @@ while   (cont_idle <= 2):
 
 ########################### ENTRADA DO START ###################################################
 ################################################################################################
-if (case == 1):
+if (case == '1'):
     control = '11111111'
     lane0 = control+"-"+SOP+PRE+"\n"
     dump0.write(lane0)
@@ -76,7 +75,7 @@ if (case == 1):
     lane3 = control+"-"+DATA+DATA+DATA+DATA+DATA+DATA+DATA+DATA+"\n"
     dump3.write(lane3)
 
-if(case == 3):
+if(case == '3'):
     control = '11111111'
     lane0 = control+"-"+IDLE+IDLE+IDLE+IDLE+IDLE+IDLE+IDLE+IDLE+"\n"
     dump0.write(lane0)
@@ -93,7 +92,7 @@ if(case == 3):
     lane3 = control+"-"+DATA+DATA+DATA+DATA+DATA+DATA+DATA+DATA+"\n"
     dump3.write(lane3)
 
-if(case == 5):
+if(case == '5'):
     control = '11111111'
     lane0 = control+"-"+IDLE+IDLE+IDLE+IDLE+IDLE+IDLE+IDLE+IDLE+"\n"
     dump0.write(lane0)
@@ -110,7 +109,7 @@ if(case == 5):
     lane3 = control+"-"+DATA+DATA+DATA+DATA+DATA+DATA+DATA+DATA+"\n"
     dump3.write(lane3)
 
-if(case == 7):
+if(case == '7'):
     control = '11111111'
     lane0 = control+"-"+IDLE+IDLE+IDLE+IDLE+IDLE+IDLE+IDLE+IDLE+"\n"
     dump0.write(lane0)
@@ -153,7 +152,7 @@ while   (cont_data <= 5):
 
 ########################### ENTRADA DO END ###################################################
 ################################################################################################
-if(case == 1):
+if(case == '1'):
     control = '00000000'
     lane0 = control+"-"+DATA+DATA+DATA+DATA+DATA+DATA+DATA+DATA+"\n"
     dump0.write(lane0)
@@ -170,7 +169,7 @@ if(case == 1):
     lane3 = control+"-"+DATA+DATA+DATA+DATA+DATA+DATA+DATA+EOP+"\n"
     dump3.write(lane3)
 
-if(case== 3):
+if(case== '3'):
     control = '00000000'
     lane0 = control + "-" + DATA + DATA + DATA + DATA + DATA + DATA + DATA + DATA + "\n"
     dump0.write(lane0)

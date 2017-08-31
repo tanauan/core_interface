@@ -4,6 +4,8 @@ if [file exists work] {
 }
 vlib work
 
+exec python ./test_cases/dump_generator.py
+
 vcom -novopt ./src/register.vhd
 vcom -novopt ./src/defines.vhd
 vcom -novopt ./src/control.vhd

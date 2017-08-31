@@ -6,9 +6,8 @@ lane1=0
 lane2=0
 lane3=0
 control = '0'
-case =3
-n=3
 
+case ='0'
 
 import sys
 case = sys.argv[1]
@@ -25,18 +24,29 @@ case = sys.argv[1]
 SOP =  '11111011' #0xFB  control = 1
 EOP =  '11111101' #0xFD  control = 1
 PRE =  '10101010101010101010101010101010101010101010101010101011' #0xaaaaaaaaaaaaa8 control = 1111111
-DATA = '11001100' #0xCC control = 0
+
+PRELH = '101010101010101010101010' # PARTE ALTA 24BITS
+PRELL = '10101010101010101010101010101011' # PARTE BAIXA 32BITS
+
+DATA = '00001000' #0xCC control = 0
 IDLE = '00000111' #0x07 control = 1
+
 
 dump0 = open('test_cases/dump_mii_rx_0.txt', 'w')
 dump1 = open('test_cases/dump_mii_rx_1.txt', 'w')
 dump2 = open('test_cases/dump_mii_rx_2.txt', 'w')
 dump3 = open('test_cases/dump_mii_rx_3.txt', 'w')
+'''
+dump0 = open('dump_mii_rx_0.txt', 'w')
+dump1 = open('dump_mii_rx_1.txt', 'w')
+dump2 = open('dump_mii_rx_2.txt', 'w')
+dump3 = open('dump_mii_rx_3.txt', 'w')
+'''
 
 #####################  ROTINA DE IDLE INICIAL ###############################################
 #############################################################################################
 
-while   (cont_idle <= 2):
+while   (cont_idle <= 1):
 
     control = '11111111'
     lane0 = control+"-"+IDLE+IDLE+IDLE+IDLE+IDLE+IDLE+IDLE+IDLE+"\n"
@@ -75,6 +85,23 @@ if (case == '1'):
     lane3 = control+"-"+DATA+DATA+DATA+DATA+DATA+DATA+DATA+DATA+"\n"
     dump3.write(lane3)
 
+if (case == '2'):
+    control = '11111111'
+    lane0 = control+"-"+IDLE+IDLE+IDLE+IDLE+SOP+PRELH+"\n"
+    dump0.write(lane0)
+
+    control = '00000000'
+    lane1 = control+"-"+PRELL+DATA+DATA+DATA+DATA+"\n"
+    dump1.write(lane1)
+
+    control = '00000000'
+    lane2 = control+"-"+DATA+DATA+DATA+DATA+DATA+DATA+DATA+DATA+"\n"
+    dump2.write(lane2)
+
+    control = '00000000'
+    lane3 = control+"-"+DATA+DATA+DATA+DATA+DATA+DATA+DATA+DATA+"\n"
+    dump3.write(lane3)
+
 if(case == '3'):
     control = '11111111'
     lane0 = control+"-"+IDLE+IDLE+IDLE+IDLE+IDLE+IDLE+IDLE+IDLE+"\n"
@@ -89,6 +116,23 @@ if(case == '3'):
     dump2.write(lane2)
 
     control = '11111111'
+    lane3 = control+"-"+DATA+DATA+DATA+DATA+DATA+DATA+DATA+DATA+"\n"
+    dump3.write(lane3)
+
+if (case == '4'):
+    control = '11111111'
+    lane0 = control+"-"+IDLE+IDLE+IDLE+IDLE+IDLE+IDLE+IDLE+IDLE+"\n"
+    dump0.write(lane0)
+
+    control = '00000000'
+    lane1 = control+"-"+IDLE+IDLE+IDLE+IDLE+SOP+PRELH+"\n"
+    dump1.write(lane1)
+
+    control = '00000000'
+    lane2 = control+"-"+PRELL+DATA+DATA+DATA+DATA+"\n"
+    dump2.write(lane2)
+
+    control = '00000000'
     lane3 = control+"-"+DATA+DATA+DATA+DATA+DATA+DATA+DATA+DATA+"\n"
     dump3.write(lane3)
 
@@ -109,6 +153,23 @@ if(case == '5'):
     lane3 = control+"-"+DATA+DATA+DATA+DATA+DATA+DATA+DATA+DATA+"\n"
     dump3.write(lane3)
 
+if (case == '6'):
+    control = '11111111'
+    lane0 = control+"-"+IDLE+IDLE+IDLE+IDLE+IDLE+IDLE+IDLE+IDLE+"\n"
+    dump0.write(lane0)
+
+    control = '00000000'
+    lane1 = control+"-"+IDLE+IDLE+IDLE+IDLE+IDLE+IDLE+IDLE+IDLE+"\n"
+    dump1.write(lane1)
+
+    control = '00000000'
+    lane2 = control+"-"+IDLE+IDLE+IDLE+IDLE+SOP+PRELH+"\n"
+    dump2.write(lane2)
+
+    control = '00000000'
+    lane3 = control+"-"+PRELL+DATA+DATA+DATA+DATA+"\n"
+    dump3.write(lane3)
+
 if(case == '7'):
     control = '11111111'
     lane0 = control+"-"+IDLE+IDLE+IDLE+IDLE+IDLE+IDLE+IDLE+IDLE+"\n"
@@ -126,6 +187,38 @@ if(case == '7'):
     lane3 = control + "-" + SOP + PRE + "\n"
     dump3.write(lane3)
 
+if (case == '8'):
+    control = '11111111'
+    lane0 = control+"-"+IDLE+IDLE+IDLE+IDLE+IDLE+IDLE+IDLE+IDLE+"\n"
+    dump0.write(lane0)
+
+    control = '00000000'
+    lane1 = control+"-"+IDLE+IDLE+IDLE+IDLE+IDLE+IDLE+IDLE+IDLE+"\n"
+    dump1.write(lane1)
+
+    control = '00000000'
+    lane2 = control+"-"+IDLE+IDLE+IDLE+IDLE+SOP+PRELH+"\n"
+    dump2.write(lane2)
+
+    control = '00000000'
+    lane3 = control+"-"+IDLE+IDLE+IDLE+IDLE+SOP+PRELH+"\n"
+    dump3.write(lane3)
+
+    control = '11111111'
+    lane0 = control + "-"+PRELL+DATA+DATA+DATA+DATA+"\n"
+    dump0.write(lane0)
+
+    control = '00000000'
+    lane1 = control + "-"+DATA+DATA+DATA+DATA+DATA+DATA+DATA+DATA+"\n"
+    dump1.write(lane1)
+
+    control = '00000000'
+    lane2 = control + "-"+DATA+DATA+DATA+DATA+DATA+DATA+DATA+DATA+"\n"
+    dump2.write(lane2)
+
+    control = '00000000'
+    lane3 = control + "-"+DATA+DATA+DATA+DATA+DATA+DATA+DATA+DATA+"\n"
+    dump3.write(lane3)
 
 
 ###################### PREENCHE COM DADOS ########################################################
@@ -169,6 +262,23 @@ if(case == '1'):
     lane3 = control+"-"+DATA+DATA+DATA+DATA+DATA+DATA+DATA+EOP+"\n"
     dump3.write(lane3)
 
+if(case == '2'):
+    control = '00000000'
+    lane0 = control+"-"+DATA+DATA+DATA+DATA+DATA+DATA+DATA+DATA+"\n"
+    dump0.write(lane0)
+
+    control = '00000000'
+    lane1 = control+"-"+DATA+DATA+DATA+DATA+DATA+DATA+DATA+DATA+"\n"
+    dump1.write(lane1)
+
+    control = '00000000'
+    lane2 = control+"-"+DATA+DATA+DATA+DATA+DATA+DATA+DATA+DATA+"\n"
+    dump2.write(lane2)
+
+    control = '00000001'
+    lane3 = control+"-"+DATA+DATA+DATA+DATA+DATA+DATA+DATA+EOP+"\n"
+    dump3.write(lane3)
+
 if(case== '3'):
     control = '00000000'
     lane0 = control + "-" + DATA + DATA + DATA + DATA + DATA + DATA + DATA + DATA + "\n"
@@ -185,6 +295,86 @@ if(case== '3'):
     control = '00000001'
     lane3 = control + "-" + DATA + DATA + DATA + DATA + DATA + DATA + DATA + EOP + "\n"
     dump3.write(lane3)
+
+if(case == '4'):
+    control = '00000000'
+    lane0 = control+"-"+DATA+DATA+DATA+DATA+DATA+DATA+DATA+DATA+"\n"
+    dump0.write(lane0)
+
+    control = '00000000'
+    lane1 = control+"-"+DATA+DATA+DATA+DATA+DATA+DATA+DATA+DATA+"\n"
+    dump1.write(lane1)
+
+    control = '00000000'
+    lane2 = control+"-"+DATA+DATA+DATA+DATA+DATA+DATA+DATA+DATA+"\n"
+    dump2.write(lane2)
+
+    control = '00000001'
+    lane3 = control+"-"+DATA+DATA+DATA+DATA+DATA+DATA+DATA+EOP+"\n"
+
+if(case == '5'):
+    control = '00000000'
+    lane0 = control+"-"+DATA+DATA+DATA+DATA+DATA+DATA+DATA+DATA+"\n"
+    dump0.write(lane0)
+
+    control = '00000000'
+    lane1 = control+"-"+DATA+DATA+DATA+DATA+DATA+DATA+DATA+DATA+"\n"
+    dump1.write(lane1)
+
+    control = '00000000'
+    lane2 = control+"-"+DATA+DATA+DATA+DATA+DATA+DATA+DATA+DATA+"\n"
+    dump2.write(lane2)
+
+    control = '00000001'
+    lane3 = control+"-"+DATA+DATA+DATA+DATA+DATA+DATA+DATA+EOP+"\n"
+
+if(case == '6'):
+    control = '00000000'
+    lane0 = control+"-"+DATA+DATA+DATA+DATA+DATA+DATA+DATA+DATA+"\n"
+    dump0.write(lane0)
+
+    control = '00000000'
+    lane1 = control+"-"+DATA+DATA+DATA+DATA+DATA+DATA+DATA+DATA+"\n"
+    dump1.write(lane1)
+
+    control = '00000000'
+    lane2 = control+"-"+DATA+DATA+DATA+DATA+DATA+DATA+DATA+DATA+"\n"
+    dump2.write(lane2)
+
+    control = '00000001'
+    lane3 = control+"-"+DATA+DATA+DATA+DATA+DATA+DATA+DATA+EOP+"\n"
+
+if(case == '7'):
+    control = '00000000'
+    lane0 = control+"-"+DATA+DATA+DATA+DATA+DATA+DATA+DATA+DATA+"\n"
+    dump0.write(lane0)
+
+    control = '00000000'
+    lane1 = control+"-"+DATA+DATA+DATA+DATA+DATA+DATA+DATA+DATA+"\n"
+    dump1.write(lane1)
+
+    control = '00000000'
+    lane2 = control+"-"+DATA+DATA+DATA+DATA+DATA+DATA+DATA+DATA+"\n"
+    dump2.write(lane2)
+
+    control = '00000001'
+    lane3 = control+"-"+DATA+DATA+DATA+DATA+DATA+DATA+DATA+EOP+"\n"
+
+if(case == '8'):
+    control = '00000000'
+    lane0 = control+"-"+DATA+DATA+DATA+DATA+DATA+DATA+DATA+DATA+"\n"
+    dump0.write(lane0)
+
+    control = '00000000'
+    lane1 = control+"-"+DATA+DATA+DATA+DATA+DATA+DATA+DATA+DATA+"\n"
+    dump1.write(lane1)
+
+    control = '00000000'
+    lane2 = control+"-"+DATA+DATA+DATA+DATA+DATA+DATA+DATA+DATA+"\n"
+    dump2.write(lane2)
+
+    control = '00000001'
+    lane3 = control+"-"+DATA+DATA+DATA+DATA+DATA+DATA+DATA+EOP+"\n"
 
 #####################  ROTINA DE IDLE INICIAL ###############################################
 #############################################################################################

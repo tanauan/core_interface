@@ -4,6 +4,15 @@ if [file exists work] {
 }
 vlib work
 
+#   case 1 = start lane0H
+#   case 2 = start lane0L
+#   case 3 = start lane1H
+#   case 4 = start lane1L
+#   case 5 = start lane2H
+#   case 6 = start lane2L
+#   case 7 = start lane3H
+#   case 8 = start lane3L
+
 exec python ./test_cases/dump_generator.py 1
 
 vcom -novopt ./src/register.vhd

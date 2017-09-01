@@ -32,12 +32,12 @@ PCS_3 M  -------/-------> |                                          |
                64         |                                          |
                           |__________________________________________|
 
-<<<<<<< HEAD
             at 156MHz                                                     at 312MHz
 </pre>
 
 ## File structure:
 
+<pre>
 |_ modelsim script
 |_ modelsim wave files
 
@@ -53,11 +53,9 @@ teste_mesa/
 
 dump/
   |_ Dump of the output interface
+</pre>
+
 
 ## Usage
-1. Set the desired test case in the run.do script by altering the paremeter passed to dump_generator.py
+1. Set the desired test case in the run.do script by altering the parameter passed to dump_generator.py
 2. Run "do run.do"
-=======
-              @156MHz                                                      @312MHz                                    
-</pre>
->>>>>>> 3369506a6d1b69fdfd46eaa6f1c219d38b89ad0a

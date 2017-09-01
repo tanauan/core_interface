@@ -32,6 +32,7 @@ PCS_3 M  -------/-------> |                                          |
                64         |                                          |
                           |__________________________________________|
 
+<<<<<<< HEAD
             at 156MHz                                                     at 312MHz
 </pre>
 
@@ -56,3 +57,7 @@ dump/
 ## Usage
 1. Set the desired test case in the run.do script by altering the paremeter passed to dump_generator.py
 2. Run "do run.do"
+=======
+              @156MHz                                                      @312MHz                                    
+</pre>
+>>>>>>> 3369506a6d1b69fdfd46eaa6f1c219d38b89ad0a

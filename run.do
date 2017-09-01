@@ -4,6 +4,7 @@ if [file exists work] {
 }
 vlib work
 
+##  ARGUMENTO 1 ################
 #   case 1 = start lane0H
 #   case 2 = start lane0L
 #   case 3 = start lane1H
@@ -13,7 +14,19 @@ vlib work
 #   case 7 = start lane3H
 #   case 8 = start lane3L
 
-exec python ./test_cases/dump_generator.py 1
+##  ARGUMENTO 2 ################
+#   case 1 = end lane0H
+#   case 2 = end lane0L
+#   case 3 = end lane1H
+#   case 4 = end lane1L
+#   case 5 = end lane2H
+#   case 6 = end lane2L
+#   case 7 = end lane3H
+#   case 8 = end lane3L
+
+exec python ./test_cases/dump_generator.py 1 1
+
+#########################################################################
 
 vcom -novopt ./src/register.vhd
 vcom -novopt ./src/defines.vhd

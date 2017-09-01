@@ -30,27 +30,6 @@ add wave -noupdate -expand -group {CORE INTERFACE} -radix hexadecimal /Top/core_
 add wave -noupdate -expand -group {CORE INTERFACE} /Top/core_interface/shift_reg_out_0
 add wave -noupdate -expand -group {CORE INTERFACE} /Top/core_interface/shift_reg_out_1
 add wave -noupdate -expand -group {CORE INTERFACE} /Top/core_interface/shifter_out
-add wave -noupdate -expand -group CONTROLLER /Top/core_interface/controller/clk
-add wave -noupdate -expand -group CONTROLLER /Top/core_interface/controller/rst_n
-add wave -noupdate -expand -group CONTROLLER -radix hexadecimal /Top/core_interface/controller/xgmii_rxc_0
-add wave -noupdate -expand -group CONTROLLER -radix hexadecimal /Top/core_interface/controller/xgmii_rxd_0
-add wave -noupdate -expand -group CONTROLLER -radix hexadecimal /Top/core_interface/controller/xgmii_rxc_1
-add wave -noupdate -expand -group CONTROLLER -radix hexadecimal /Top/core_interface/controller/xgmii_rxd_1
-add wave -noupdate -expand -group CONTROLLER -radix hexadecimal /Top/core_interface/controller/xgmii_rxc_2
-add wave -noupdate -expand -group CONTROLLER -radix hexadecimal /Top/core_interface/controller/xgmii_rxd_2
-add wave -noupdate -expand -group CONTROLLER -radix hexadecimal /Top/core_interface/controller/xgmii_rxc_3
-add wave -noupdate -expand -group CONTROLLER -radix hexadecimal /Top/core_interface/controller/xgmii_rxd_3
-add wave -noupdate -expand -group CONTROLLER -radix binary /Top/core_interface/controller/ctrl_delay
-add wave -noupdate -expand -group CONTROLLER -radix binary /Top/core_interface/controller/shift_out
-add wave -noupdate -expand -group CONTROLLER /Top/core_interface/controller/wen_fifo
-add wave -noupdate -expand -group CONTROLLER -radix binary /Top/core_interface/controller/sop_location
-add wave -noupdate -expand -group CONTROLLER -radix binary /Top/core_interface/controller/eop_location
-add wave -noupdate -expand -group CONTROLLER -radix binary /Top/core_interface/controller/shift_calc
-add wave -noupdate -expand -group CONTROLLER -radix binary /Top/core_interface/controller/shift_out_int
-add wave -noupdate -expand -group CONTROLLER -radix binary /Top/core_interface/controller/shift_out_reg
-add wave -noupdate -expand -group CONTROLLER -radix binary /Top/core_interface/controller/shift_out_reg_reg
-add wave -noupdate -expand -group CONTROLLER /Top/core_interface/controller/wen_fifo_reg
-add wave -noupdate -expand -group CONTROLLER /Top/core_interface/controller/wen_fifo_reg_reg
 add wave -noupdate -expand -group {SHIFT REGISTER} /Top/core_interface/shift_reg/clk
 add wave -noupdate -expand -group {SHIFT REGISTER} /Top/core_interface/shift_reg/rst_n
 add wave -noupdate -expand -group {SHIFT REGISTER} -radix hexadecimal /Top/core_interface/shift_reg/xgmii_rxc_0
@@ -68,6 +47,30 @@ add wave -noupdate -expand -group {SHIFT REGISTER} -radix hexadecimal /Top/core_
 add wave -noupdate -expand -group {SHIFT REGISTER} -radix hexadecimal /Top/core_interface/shift_reg/reg_delay_Q
 add wave -noupdate -expand -group {SHIFT REGISTER} -radix hexadecimal /Top/core_interface/shift_reg/out_0
 add wave -noupdate -expand -group {SHIFT REGISTER} -radix hexadecimal /Top/core_interface/shift_reg/out_1
+add wave -noupdate -expand -group CONTROLLER /Top/core_interface/controller/clk
+add wave -noupdate -expand -group CONTROLLER /Top/core_interface/controller/rst_n
+add wave -noupdate -expand -group CONTROLLER -radix hexadecimal /Top/core_interface/controller/xgmii_rxc_0
+add wave -noupdate -expand -group CONTROLLER -radix hexadecimal /Top/core_interface/controller/xgmii_rxd_0
+add wave -noupdate -expand -group CONTROLLER -radix hexadecimal /Top/core_interface/controller/xgmii_rxc_1
+add wave -noupdate -expand -group CONTROLLER -radix hexadecimal /Top/core_interface/controller/xgmii_rxd_1
+add wave -noupdate -expand -group CONTROLLER -radix hexadecimal /Top/core_interface/controller/xgmii_rxc_2
+add wave -noupdate -expand -group CONTROLLER -radix hexadecimal /Top/core_interface/controller/xgmii_rxd_2
+add wave -noupdate -expand -group CONTROLLER -radix hexadecimal /Top/core_interface/controller/xgmii_rxc_3
+add wave -noupdate -expand -group CONTROLLER -radix hexadecimal /Top/core_interface/controller/xgmii_rxd_3
+add wave -noupdate -expand -group CONTROLLER -radix binary /Top/core_interface/controller/ctrl_delay
+add wave -noupdate -expand -group CONTROLLER -radix binary /Top/core_interface/controller/shift_out
+add wave -noupdate -expand -group CONTROLLER -radix binary /Top/core_interface/controller/sop_location
+add wave -noupdate -expand -group CONTROLLER -radix binary /Top/core_interface/controller/eop_location
+add wave -noupdate -expand -group CONTROLLER -radix binary /Top/core_interface/controller/shift_calc
+add wave -noupdate -expand -group CONTROLLER -radix binary /Top/core_interface/controller/shift_out_int
+add wave -noupdate -expand -group CONTROLLER -radix binary /Top/core_interface/controller/shift_out_reg
+add wave -noupdate -expand -group CONTROLLER -radix binary /Top/core_interface/controller/shift_out_reg_reg
+add wave -noupdate -expand -group CONTROLLER /Top/core_interface/controller/missed_sop
+add wave -noupdate -expand -group CONTROLLER /Top/core_interface/controller/missed_sop_reg
+add wave -noupdate -expand -group CONTROLLER /Top/core_interface/controller/missed_sop_reg_reg
+add wave -noupdate -expand -group CONTROLLER /Top/core_interface/controller/wen_fifo_reg
+add wave -noupdate -expand -group CONTROLLER /Top/core_interface/controller/wen_fifo_reg_reg
+add wave -noupdate /Top/core_interface/controller/wen_fifo
 add wave -noupdate -expand -group SHIFTER /Top/core_interface/shifter/clk
 add wave -noupdate -expand -group SHIFTER /Top/core_interface/shifter/rst_n
 add wave -noupdate -expand -group SHIFTER -radix hexadecimal /Top/core_interface/shifter/in_0
@@ -88,10 +91,10 @@ add wave -noupdate -group OUT /Top/dump_output/mac_data
 add wave -noupdate -group OUT /Top/dump_output/file_name
 add wave -noupdate -group OUT /Top/dump_output/dump_file
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {47985 ps} 0}
+WaveRestoreCursors {{Cursor 1} {311056 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 376
-configure wave -valuecolwidth 243
+configure wave -valuecolwidth 533
 configure wave -justifyvalue left
 configure wave -signalnamewidth 0
 configure wave -snapdistance 10
@@ -104,4 +107,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {472591 ps} {517400 ps}
+WaveRestoreZoom {967253 ps} {1001724 ps}

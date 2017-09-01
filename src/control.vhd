@@ -27,6 +27,7 @@ end entity;
 architecture behav_control of control is
   signal sop_location      : std_logic_vector(3 downto 0);
   signal eop_location      : std_logic_vector(7 downto 0);
+  signal eop_location_reg  : std_logic_vector(7 downto 0);
   signal shift_calc        : std_logic_vector(2 downto 0);
   signal shift_out_int     : std_logic_vector(2 downto 0);
   signal shift_out_reg     : std_logic_vector(2 downto 0);
@@ -34,6 +35,7 @@ architecture behav_control of control is
   signal wen_fifo_reg      : std_logic;
   signal wen_fifo_reg_reg  : std_logic;
   signal missed_sop        : std_logic;
+  signal missed_sop_reg    : std_logic;
 
 begin
 
@@ -74,7 +76,7 @@ begin
       elsif (xgmii_rxc_3(0) = '1' and xgmii_rxd_3(LANE0) = START) then
         -- SOP on LANE 0 of PCS 3 -> word 6
         sop_location <= "0110";
-        missed_sop <= '1';
+        missed_sop <= '1'; --
       elsif (xgmii_rxc_3(4) = '1' and xgmii_rxd_3(LANE4) = START) then
         -- SOP on LANE 4 of PCS 3 -> word 7
         sop_location <= "0111";
@@ -173,8 +175,9 @@ begin
   -- 10 : Words 6 and 7 delayed
   -- 11 : Never happens
 
-  ctrl_delay_mux: ctrl_delay <= "01" when sop_location = "0111" or (eop_location >= x"18" and eop_location <= x"1F") else
-                                "10" when sop_location = "0110" or (eop_location >= x"18" and eop_location <= x"1F") else -- Verificar eop
+  ctrl_delay_mux: ctrl_delay <= "01" when (sop_location = "0111" and missed_sop = '0') or (eop_location >= x"18" and eop_location <= x"1F") else
+                                "10" when (sop_location = "0110" and missed_sop = '0') or (eop_location >= x"18" and eop_location <= x"1F") else -- Verificar eop
+                                "11" when missed_sop = '1' else
                                 "00";
 
   reg_shift_ctrl: process (sop_location, eop_location)
@@ -230,12 +233,10 @@ begin
     elsif clk'event and clk = '1' then
       -- SOP: start writing
       if (sop_location /= "1000" and sop_location /= "0111" and sop_location /= "0110"
-          and wen_fifo_reg = '0') or missed_sop = '1' then
-          --or missed_sop = '1' and wen_fifo_reg = '0') then
+          and wen_fifo_reg = '0') or missed_sop_reg = '1' then
         wen_fifo_reg <= '1';
       -- EOP: stop writing
-
-    elsif eop_location /= "00100000" and wen_fifo_reg = '1' then
+    elsif eop_location_reg /= "00100000" and wen_fifo_reg_reg = '1' then
         wen_fifo_reg <= '0';
 
       end if;
@@ -269,6 +270,8 @@ begin
       shift_out_reg <= shift_out_int;
       shift_out_reg_reg <= shift_out_reg;
       wen_fifo_reg_reg <= wen_fifo_reg;
+      eop_location_reg <= eop_location;
+      missed_sop_reg <= missed_sop;
     end if;
   end process;
 

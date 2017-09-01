@@ -8,7 +8,7 @@ Core_interface will gather the frame broken into the four lanes and store it int
 fifo so MAC can consume the frame at double the PCS frequency and bus width. The data stored
 will only contain the payload, meaning no preamble, no SFD, and no IPG. The CRC field will be
 kept along with data since MAC will check it later.
-
+<pre>
                            __________________________________________
                           |                                          |
 PCS_0 M  -------/-------> |                                          |
@@ -33,3 +33,4 @@ PCS_3 M  -------/-------> |                                          |
                           |__________________________________________|
 
               @156MHz                                                      @312MHz                                    
+</pre>

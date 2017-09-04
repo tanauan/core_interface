@@ -24,6 +24,13 @@ vlib work
 #   case 7 = end lane3H
 #   case 8 = end lane3L
 
+##  ARGUMENTO 1 ################
+#   case 9 = end lane0H start lane2H
+#   case 10 = end lane0L start lane2L
+#   case 11 = end lane1H start lane3H
+#   case 12 = end lane1L start lane3L
+################################
+
 exec python ./test_cases/dump_generator.py 1 1
 
 #########################################################################

@@ -8,23 +8,26 @@ use work.interface_defs.all;
 
 entity control is
   port (
-    clk         : in  std_logic;
-    rst_n       : in  std_logic;
-    xgmii_rxc_0 : in  std_logic_vector( 7 downto 0);
-    xgmii_rxd_0 : in  std_logic_vector(63 downto 0);
-    xgmii_rxc_1 : in  std_logic_vector( 7 downto 0);
-    xgmii_rxd_1 : in  std_logic_vector(63 downto 0);
-    xgmii_rxc_2 : in  std_logic_vector( 7 downto 0);
-    xgmii_rxd_2 : in  std_logic_vector(63 downto 0);
-    xgmii_rxc_3 : in  std_logic_vector( 7 downto 0);
-    xgmii_rxd_3 : in  std_logic_vector(63 downto 0);
-    ctrl_delay  : out std_logic_vector( 1 downto 0);
-    shift_out   : out std_logic_vector(2 downto 0);
-    wen_fifo    : out std_logic
+    clk             : in  std_logic;
+    rst_n           : in  std_logic;
+    xgmii_rxc_0     : in  std_logic_vector( 7 downto 0);
+    xgmii_rxd_0     : in  std_logic_vector(63 downto 0);
+    xgmii_rxc_1     : in  std_logic_vector( 7 downto 0);
+    xgmii_rxd_1     : in  std_logic_vector(63 downto 0);
+    xgmii_rxc_2     : in  std_logic_vector( 7 downto 0);
+    xgmii_rxd_2     : in  std_logic_vector(63 downto 0);
+    xgmii_rxc_3     : in  std_logic_vector( 7 downto 0);
+    xgmii_rxd_3     : in  std_logic_vector(63 downto 0);
+    ctrl_delay      : out std_logic_vector( 1 downto 0);
+    shift_out       : out std_logic_vector(2 downto 0);
+    eop_line_offset : out std_logic_vector(5 downto 0);
+    wen_fifo        : out std_logic
   );
 end entity;
 
 architecture behav_control of control is
+  constant NO_EOP          : std_logic_vector(5 downto 0) := "100000";
+
   signal sop_location      : std_logic_vector(3 downto 0);
   signal eop_location      : std_logic_vector(7 downto 0);
   signal eop_location_reg  : std_logic_vector(7 downto 0);
@@ -274,6 +277,8 @@ begin
       missed_sop_reg <= missed_sop;
     end if;
   end process;
+
+  eop_line_offset <= eop_location(5 downto 0) when wen_fifo_reg = '1' else NO_EOP;
 
   wen_fifo <= wen_fifo_reg_reg;
   shift_out <= shift_out_reg_reg;

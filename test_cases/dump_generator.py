@@ -44,8 +44,8 @@ cont = 0
 
 SOP = '11111011'  # 0xFB  control = 1
 EOP = '11111101'  # 0xFD  control = 1
-PRE = '10101010101010101010101010101010101010101010101010101011'  # 0xaaaaaaaaaaaaa8 control = 1111111
-
+#PRE = '10101010101010101010101010101010101010101010101010101011'  # 0xaaaaaaaaaaaaa8 control = 1111111
+PRE = '1101010101010101010101010101010101010101010101010101010111111011'
 PRELH = '101010101010101010101010'  # PARTE ALTA 24BITS
 PRELL = '10101010101010101010101010101011'  # PARTE BAIXA 32BITS
 
@@ -91,7 +91,7 @@ while cont < 3:
 ########################### ENTRADA DO START ###################################################
 ################################################################################################
     if caseS == '1':
-        control = '11111111'
+        control = '00000001'
         lane0 = control + "-" + SOP + PRE + "\n"
         dump0.write(lane0)
 
@@ -260,8 +260,8 @@ while cont < 3:
         dump3.write(lane3)
 
     if caseS == '10':
-        control = '00001111'
-        lane0 = control + "-" + DATA + DATA + DATA + DATA + EOP + IDLE + IDLE + IDLE + "\n"
+        control = '11110000'
+        lane0 = control + "-"  + IDLE + IDLE + IDLE + EOP + DATA + DATA + DATA + DATA + "\n"
         dump0.write(lane0)
 
         control = '11111111'

@@ -233,7 +233,9 @@ begin
   begin
     if (rst_n = '0') then
       wen_fifo_reg <= '0';
+      wen_fifo_reg_reg<= '0';
     elsif clk'event and clk = '1' then
+      wen_fifo_reg_reg <= wen_fifo_reg;
       -- SOP: start writing
       if (sop_location /= "1000" and sop_location /= "0111" and sop_location /= "0110"
           and wen_fifo_reg = '0') or missed_sop_reg = '1' then
@@ -272,7 +274,6 @@ begin
     elsif clk'event and clk = '1' then
       shift_out_reg <= shift_out_int;
       shift_out_reg_reg <= shift_out_reg;
-      wen_fifo_reg_reg <= wen_fifo_reg;
       eop_location_reg <= eop_location;
       missed_sop_reg <= missed_sop;
     end if;

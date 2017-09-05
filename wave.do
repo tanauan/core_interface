@@ -67,7 +67,6 @@ add wave -noupdate -expand -group CONTROLLER -radix binary /Top/core_interface/c
 add wave -noupdate -expand -group CONTROLLER -radix binary /Top/core_interface/controller/shift_out_reg_reg
 add wave -noupdate -expand -group CONTROLLER /Top/core_interface/controller/missed_sop
 add wave -noupdate -expand -group CONTROLLER /Top/core_interface/controller/missed_sop_reg
-add wave -noupdate -expand -group CONTROLLER /Top/core_interface/controller/missed_sop_reg_reg
 add wave -noupdate -expand -group CONTROLLER /Top/core_interface/controller/wen_fifo_reg
 add wave -noupdate -expand -group CONTROLLER /Top/core_interface/controller/wen_fifo_reg_reg
 add wave -noupdate /Top/core_interface/controller/wen_fifo
@@ -77,9 +76,13 @@ add wave -noupdate -expand -group SHIFTER -radix hexadecimal /Top/core_interface
 add wave -noupdate -expand -group SHIFTER -radix hexadecimal /Top/core_interface/shifter/in_1
 add wave -noupdate -expand -group SHIFTER -radix binary /Top/core_interface/shifter/ctrl_reg_shift
 add wave -noupdate -expand -group SHIFTER -radix hexadecimal /Top/core_interface/shifter/out_data
-add wave -noupdate -expand -group FIFO -radix hexadecimal /Top/core_interface/fifo/mem
+add wave -noupdate -expand -group FIFO /Top/core_interface/fifo/clk_w
+add wave -noupdate -expand -group FIFO /Top/core_interface/fifo/clk_r
 add wave -noupdate -expand -group FIFO /Top/core_interface/fifo/wen
+add wave -noupdate -expand -group FIFO -radix hexadecimal /Top/core_interface/fifo/w_ptr
 add wave -noupdate -expand -group FIFO -radix hexadecimal /Top/core_interface/fifo/data_in
+add wave -noupdate -expand -group FIFO -radix hexadecimal /Top/core_interface/fifo/r_ptr_l
+add wave -noupdate -expand -group FIFO -radix hexadecimal /Top/core_interface/fifo/r_ptr_h
 add wave -noupdate -expand -group FIFO /Top/core_interface/fifo/ren
 add wave -noupdate -expand -group FIFO -radix hexadecimal /Top/core_interface/fifo/data_out
 add wave -noupdate -expand -group FIFO -radix hexadecimal /Top/core_interface/fifo/empty
@@ -91,7 +94,7 @@ add wave -noupdate -group OUT /Top/dump_output/mac_data
 add wave -noupdate -group OUT /Top/dump_output/file_name
 add wave -noupdate -group OUT /Top/dump_output/dump_file
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {311056 ps} 0}
+WaveRestoreCursors {{Cursor 1} {15589 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 376
 configure wave -valuecolwidth 533
@@ -107,4 +110,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {967253 ps} {1001724 ps}
+WaveRestoreZoom {12586 ps} {47057 ps}

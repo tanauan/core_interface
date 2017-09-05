@@ -30,7 +30,7 @@ architecture behav of ring_fifo is
   signal w_ptr   : std_logic_vector(N-1 downto 0);
   signal r_ptr_l : std_logic_vector(N-1 downto 0);
   signal r_ptr_h : std_logic_vector(N-1 downto 0);
-  signal rr      : std_logic;
+  signal rr      : std_logic;                 -- Round Robbin fifos when reading
 
   -- signal last_op : std_logic; -- 1 - last operation = write / 0 - last operation = read
   signal last_w  : std_logic; -- A write happened last cycle

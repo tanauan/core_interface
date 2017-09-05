@@ -37,7 +37,8 @@ architecture behav_mii_shift_register of mii_shift_register is
 
   begin
 
-    reg_current_D <= xgmii_rxd_0 & xgmii_rxd_1 & xgmii_rxd_2 & xgmii_rxd_3;
+    --reg_current_D <= xgmii_rxd_0 & xgmii_rxd_1 & xgmii_rxd_2 & xgmii_rxd_3;
+    reg_current_D <= xgmii_rxd_3 & xgmii_rxd_2 & xgmii_rxd_1 & xgmii_rxd_0;  --testando concatenação
 
     reg_current : entity work.regnbit generic map (size=>256)
       port map(

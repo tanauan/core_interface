@@ -76,20 +76,20 @@ begin
     end if;
   end process;
 
-  -- comb: process(w_ptr,r_ptr,last_op)
-  -- begin
-  --   if w_ptr = r_ptr then
-  --     if (last_op = '1') then
-  --       full <= '1';
-  --       empty <= '0';
-  --     else
-  --       full <= '0';
-  --       empty <= '1';
-  --     end if;
-  --   else
-  --     full <= '0';
-  --     empty <= '0';
-  --   end if;
-  -- end process;
+  comb: process(w_ptr, r_ptr_l, r_ptr_h, last_w)
+  begin
+    if w_ptr = r_ptr_h and w_ptr = r_ptr_l then -- For at least one cycle they will be equal
+      if last_w = '1' then
+        full <= '1';
+        empty <= '0';
+      else
+        full <= '0';
+        empty <= '1';
+      end if;
+    else
+      full <= '0';
+      empty <= '0';
+    end if;
+  end process;
 
 end behav;

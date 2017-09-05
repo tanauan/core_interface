@@ -23,10 +23,12 @@ end entity;
 architecture behav_core_interface of core_interface is
     signal ctrl_mux_delay      : std_logic_vector(  1 downto 0);
     signal ctrl_shift_reg      : std_logic_vector(  2 downto 0);
+    signal eop_line_offset     : std_logic_vector(  5 downto 0);
     signal shift_reg_out_0     : std_logic_vector(255 downto 0);
     signal shift_reg_out_1     : std_logic_vector(255 downto 0);
     signal shifter_out         : std_logic_vector(255 downto 0);
-    signal fifo_out            : std_logic_vector(255 downto 0);
+    signal fifo_in             : std_logic_vector(255 downto 0);
+    signal fifo_out            : std_logic_vector(127 downto 0);
     signal fifo_wen            : std_logic;
     signal fifo_ren            : std_logic;
     signal fifo_empty          : std_logic;
@@ -35,19 +37,20 @@ architecture behav_core_interface of core_interface is
   begin
 
     controller: entity work.control port map(
-          clk         => clk_156,
-          rst_n       => rst_n,
-          xgmii_rxc_0 => xgmii_rxc_0,
-          xgmii_rxd_0 => xgmii_rxd_0,
-          xgmii_rxc_1 => xgmii_rxc_1,
-          xgmii_rxd_1 => xgmii_rxd_1,
-          xgmii_rxc_2 => xgmii_rxc_2,
-          xgmii_rxd_2 => xgmii_rxd_2,
-          xgmii_rxc_3 => xgmii_rxc_3,
-          xgmii_rxd_3 => xgmii_rxd_3,
-          ctrl_delay  => ctrl_mux_delay,
-          shift_out   => ctrl_shift_reg,
-          wen_fifo    => fifo_wen
+          clk             => clk_156,
+          rst_n           => rst_n,
+          xgmii_rxc_0     => xgmii_rxc_0,
+          xgmii_rxd_0     => xgmii_rxd_0,
+          xgmii_rxc_1     => xgmii_rxc_1,
+          xgmii_rxd_1     => xgmii_rxd_1,
+          xgmii_rxc_2     => xgmii_rxc_2,
+          xgmii_rxd_2     => xgmii_rxd_2,
+          xgmii_rxc_3     => xgmii_rxc_3,
+          xgmii_rxd_3     => xgmii_rxd_3,
+          ctrl_delay      => ctrl_mux_delay,
+          shift_out       => ctrl_shift_reg,
+          eop_line_offset => eop_line_offset,
+          wen_fifo        => fifo_wen
     );
 
     shift_reg: entity work.mii_shift_register port map(
@@ -77,15 +80,19 @@ architecture behav_core_interface of core_interface is
     );
 
     fifo_ren <= '0', '1' after 300 ns; -- Waiting for mac
+
+    -- fifo_in <= shifter_out & eop_line_offset;
+    fifo_in <= shifter_out;
     fifo: entity work.ring_fifo port map(
-          clk             => clk_156,
-          rst_n           => rst_n,
-          data_in         => shifter_out,
-          data_out        => fifo_out,
-          wen             => fifo_wen,
-          ren             => fifo_ren,
-          empty           => fifo_empty,
-          full            => fifo_full
+          clk_w     => clk_156,
+          clk_r     => clk_312,
+          rst_n     => rst_n,
+          data_in   => fifo_in,
+          data_out  => fifo_out,
+          wen       => fifo_wen,
+          ren       => fifo_ren,
+          empty     => fifo_empty,
+          full      => fifo_full
     );
 
 end behav_core_interface;

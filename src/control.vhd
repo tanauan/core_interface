@@ -236,7 +236,7 @@ begin
           and wen_fifo_reg = '0') or missed_sop_reg = '1' then
         wen_fifo_reg <= '1';
       -- EOP: stop writing
-    elsif eop_location_reg /= "00100000" and wen_fifo_reg_reg = '1' then
+    elsif eop_location /= "00100000" and wen_fifo_reg_reg = '1' then
         wen_fifo_reg <= '0';
 
       end if;

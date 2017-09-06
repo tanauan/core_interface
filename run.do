@@ -5,30 +5,31 @@ if [file exists work] {
 vlib work
 
 ##  ARGUMENTO 1 ################
-#   case 1 = start lane0H
-#   case 2 = start lane0L
-#   case 3 = start lane1H
-#   case 4 = start lane1L
-#   case 5 = start lane2H
-#   case 6 = start lane2L
-#   case 7 = start lane3H
-#   case 8 = start lane3L
-
+#   case 1 = start lane0L
+#   case 2 = start lane0H
+#   case 3 = start lane1L
+#   case 4 = start lane1H
+#   case 5 = start lane2L
+#   case 6 = start lane2H
+#   case 7 = start lane3L
+#   case 8 = start lane3H
+################################
 ##  ARGUMENTO 2 ################
-#   case 1 = end lane0H
-#   case 2 = end lane0L
-#   case 3 = end lane1H
-#   case 4 = end lane1L
-#   case 5 = end lane2H
-#   case 6 = end lane2L
-#   case 7 = end lane3H
-#   case 8 = end lane3L
+#   case 1 = end lane0L
+#   case 2 = end lane0H
+#   case 3 = end lane1L
+#   case 4 = end lane1H
+#   case 5 = end lane2L
+#   case 6 = end lane2H
+#   case 7 = end lane3L
+#   case 8 = end lane3H
+################################
 
 ##  ARGUMENTO 1 ################
-#   case 9 = end lane0H start lane2H
-#   case 10 = end lane0L start lane2L
-#   case 11 = end lane1H start lane3H
-#   case 12 = end lane1L start lane3L
+#   case 9 = end lane0L start lane2L
+#   case 10 = end lane0H start lane2H
+#   case 11 = end lane1L start lane3L
+#   case 12 = end lane1H start lane3H
 ################################
 
 exec python ./test_cases/dump_generator.py 1 1

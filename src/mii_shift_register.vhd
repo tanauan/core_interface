@@ -63,16 +63,15 @@ architecture behav_mii_shift_register of mii_shift_register is
                 ck  =>  clk,
                 rst =>  rst_n,
                 ce  =>  rst_n,
-                D   =>  reg_previous_Q(63 downto 0),
+                D   =>  reg_previous_Q(255 downto 192),
                 Q   =>  reg_delay_Q
               );
 
 
     mux_out_0:  out_0 <= reg_current_Q;
 
-    mux_out_1:  out_1 <= reg_previous_Q when (ctrl="00" or ctrl="11")  else
-                reg_previous_Q(255 downto 32) & reg_delay_Q(31 downto 0) when ctrl="01" else
-                reg_previous_Q(255 downto 64) & reg_delay_Q(63 downto 0) when ctrl="10" else
-                (others=>'0');
+    mux_out_1:  out_1 <= reg_delay_Q(63 downto 32) & reg_previous_Q(255 downto 32)  when ctrl="01" else
+                         reg_delay_Q & reg_previous_Q(255 downto 64)                when ctrl="10" else
+                         reg_previous_Q;
 
 end behav_mii_shift_register;

@@ -1,7 +1,7 @@
 library ieee;
   use ieee.std_logic_1164.all;
-  use IEEE.std_logic_unsigned.all;
-  use IEEE.numeric_std.all;
+  use ieee.numeric_std.all;
+  use ieee.std_logic_unsigned.all;
 
 use work.interface_defs.all;
 
@@ -28,17 +28,20 @@ end entity;
 architecture behav_control of control is
   constant NO_EOP          : std_logic_vector(5 downto 0) := "100000";
 
-  signal sop_location      : std_logic_vector(3 downto 0);
-  signal eop_location      : std_logic_vector(7 downto 0);
-  signal eop_location_reg  : std_logic_vector(7 downto 0);
-  signal shift_calc        : std_logic_vector(2 downto 0);
-  signal shift_out_int     : std_logic_vector(2 downto 0);
-  signal shift_out_reg     : std_logic_vector(2 downto 0);
-  signal shift_out_reg_reg : std_logic_vector(2 downto 0);
-  signal wen_fifo_reg      : std_logic;
-  signal wen_fifo_reg_reg  : std_logic;
-  signal missed_sop        : std_logic;
-  signal missed_sop_reg    : std_logic;
+  signal sop_location         : std_logic_vector(3 downto 0);
+  signal eop_location         : std_logic_vector(7 downto 0);
+  signal sop_by_byte          : std_logic_vector(7 downto 0);
+  signal eop_location_reg     : std_logic_vector(7 downto 0);
+  signal eop_location_reg_reg : std_logic_vector(7 downto 0);
+  signal shift_calc           : std_logic_vector(2 downto 0);
+  signal shift_out_int        : std_logic_vector(2 downto 0);
+  signal shift_out_reg        : std_logic_vector(2 downto 0);
+  signal shift_out_reg_reg    : std_logic_vector(2 downto 0);
+  signal ctrl_delay_int       : std_logic_vector( 1 downto 0);
+  signal wen_fifo_reg         : std_logic;
+  signal wen_fifo_reg_reg     : std_logic;
+  signal missed_sop           : std_logic;
+  signal missed_sop_reg       : std_logic;
 
 begin
 
@@ -178,10 +181,20 @@ begin
   -- 10 : Words 6 and 7 delayed
   -- 11 : Never happens
 
-  ctrl_delay_mux: ctrl_delay <= "01" when (sop_location = "0111" and missed_sop = '0') or (eop_location >= x"18" and eop_location <= x"1F") else
-                                "10" when (sop_location = "0110" and missed_sop = '0') or (eop_location >= x"18" and eop_location <= x"1F") else -- Verificar eop
-                                "11" when missed_sop = '1' else
-                                "00";
+  ctrl_delay_int <= "01" when (sop_location = "0101" and eop_location /= "00100000") else
+                    "10" when (sop_location = "0100" and eop_location /= "00100000") else
+                    "00";
+
+  mux_delay_ctrl: process(clk, rst_n)
+  begin
+    if rst_n = '0' then
+      ctrl_delay <= (others=>'0');
+    elsif clk'event and clk = '1' then
+      if ctrl_delay_int /= "00" then
+        ctrl_delay <= ctrl_delay_int;
+      end if;
+    end if;
+  end process;
 
   reg_shift_ctrl: process (sop_location, eop_location)
   begin
@@ -228,25 +241,47 @@ begin
 
   end process;
 
+  -- Process to calculate the SOP bnyte position
+  sop_pos_byte: process (clk, rst_n)
+  begin
+    if rst_n = '0' then
+      sop_by_byte <= (others=>'0');
+    elsif clk'event and clk = '1' then
+      if sop_location /= "1000" then
+        sop_by_byte <= "00" & (sop_location + 1) & "00";
+      end if;
+    end if;
+  end process;
+
   -- Process to control fifo write enable
   wen_fifo_proc: process (clk, rst_n)
   begin
-    if (rst_n = '0') then
+    if rst_n = '0' then
       wen_fifo_reg <= '0';
-      wen_fifo_reg_reg<= '0';
+      wen_fifo_reg_reg <= '0';
+      eop_location_reg <= (others=>'0');
+      eop_location_reg_reg <= (others=>'0');
     elsif clk'event and clk = '1' then
       wen_fifo_reg_reg <= wen_fifo_reg;
+      eop_location_reg <= eop_location;
+      eop_location_reg_reg <= eop_location_reg;
+
       -- SOP: start writing
       if (sop_location /= "1000" and sop_location /= "0111" and sop_location /= "0110"
           and wen_fifo_reg = '0') or missed_sop_reg = '1' then
         wen_fifo_reg <= '1';
+
       -- EOP: stop writing
-    elsif eop_location /= "00100000" and wen_fifo_reg_reg = '1' then
-        wen_fifo_reg <= '0';
-
+      elsif eop_location /= "00100000" and
+            sop_by_byte >= eop_location and shift_calc /= "000"then
+          wen_fifo_reg <= '0';
+      elsif eop_location_reg /= "00100000" then
+          wen_fifo_reg <= '0';
+      elsif eop_location_reg_reg /= "00100000" then
+          wen_fifo_reg <= '0';
       end if;
-    end if;
 
+    end if;
   end process;
 
   -- Process to keep shift value between SOPs
@@ -274,7 +309,6 @@ begin
     elsif clk'event and clk = '1' then
       shift_out_reg <= shift_out_int;
       shift_out_reg_reg <= shift_out_reg;
-      eop_location_reg <= eop_location;
       missed_sop_reg <= missed_sop;
     end if;
   end process;

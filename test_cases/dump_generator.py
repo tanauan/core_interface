@@ -416,7 +416,8 @@ while cont < 3:
 
         control = '11111111'
         lane3 = control + "-" + IDLE + IDLE + IDLE + IDLE + IDLE + IDLE + IDLE + IDLE + "\n"
-
+        dump3.write(lane3)
+        
     if caseE == '5':
         control = '00000000'
         lane0 = control + "-" + DATA0 + DATA0 + DATA0 + DATA0 + DATA0 + DATA0 + DATA0 + DATA0 + "\n"
@@ -432,6 +433,7 @@ while cont < 3:
 
         control = '11111111'
         lane3 = control + "-" + IDLE + IDLE + IDLE + IDLE + IDLE + IDLE + IDLE + IDLE + "\n"
+        dump3.write(lane3)
 
     if caseE == '6':
         control = '00000000'
@@ -448,6 +450,7 @@ while cont < 3:
 
         control = '11111111'
         lane3 = control + "-" + IDLE + IDLE + IDLE + IDLE + IDLE + IDLE + IDLE + IDLE + "\n"
+        dump3.write(lane3)
 
     if caseE == '7':
         control = '00000000'
@@ -464,6 +467,7 @@ while cont < 3:
 
         control = '11111111'
         lane3 = control + "-" + IDLE + IDLE + IDLE + IDLE + IDLE + IDLE + IDLE + EOP + "\n"
+        dump3.write(lane3)
 
     if caseE == '8':
         control = '00000000'
@@ -480,6 +484,7 @@ while cont < 3:
 
         control = '11110000'
         lane3 = control + "-" + IDLE + IDLE + IDLE + EOP + DATA3 + DATA3 + DATA3 + DATA3 + "\n"
+        dump3.write(lane3)
 
 #####################  ROTINA DE IDLE FINAL ###############################################
 #############################################################################################

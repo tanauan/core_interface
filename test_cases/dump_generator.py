@@ -35,7 +35,8 @@ cont = 0
 #   case 8 = end lane3H
 ################################
 
-##  ARGUMENTO 1 ################
+##  ARGUMENTO 1 #################
+##  ARGUMENTO 2 = 0 #############
 #   case 9 = end lane0L start lane2L
 #   case 10 = end lane0H start lane2H
 #   case 11 = end lane1L start lane3L
@@ -43,13 +44,14 @@ cont = 0
 ################################
 
 
-SOP = '11111011'  # 0xFB  control = 1
-EOP = '11111101'  # 0xFD  control = 1
-PRE = '11010101010101010101010101010101010101010101010101010101'
-PRELH = '010101010101010101010101'  # PARTE ALTA 24BITS
-PRELL = '11010101010101010101010101010101'  # PARTE BAIXA 32BITS
+SOP   = '11111011'  # 0xFB  control = 1
+EOP   = '11111101'  # 0xFD  control = 1
+PRE   = '11010101010101010101010101010101010101010101010101010101'
+PREL  = '010101010101010101010101'  # PARTE ALTA 24BITS
+PREH  = '11010101010101010101010101010101'  # PARTE BAIXA 32BITS
+SFD   = '10101011'
 
-IDLE = '00000111'  # 0x07 control = 1
+IDLE  = '00000111'  # 0x07 control = 1
 DATA0 = '11010000'  # 0xD0 control = 0
 DATA1 = '11010001'  # 0xD1 control = 0
 DATA2 = '11010010'  # 0xD2 control = 0
@@ -111,11 +113,11 @@ while cont < 3:
 
     if caseS == '2':
         control = '00011111'
-        lane0 = control + "-" + PRELH + SOP + IDLE + IDLE + IDLE + IDLE + "\n"
+        lane0 = control + "-" + PREL + SOP + IDLE + IDLE + IDLE + IDLE + "\n"
         dump0.write(lane0)
 
         control = '00000000'
-        lane1 = control + "-" + DATA1 + DATA1 + DATA1 + DATA1 + PRELL + "\n"
+        lane1 = control + "-" + DATA1 + DATA1 + DATA1 + DATA1 + PREH + "\n"
         dump1.write(lane1)
 
         control = '00000000'
@@ -149,11 +151,11 @@ while cont < 3:
         dump0.write(lane0)
 
         control = '00011111'
-        lane1 = control + "-" + PRELH + SOP + IDLE + IDLE + IDLE + IDLE + "\n"
+        lane1 = control + "-" + PREL + SOP + IDLE + IDLE + IDLE + IDLE + "\n"
         dump1.write(lane1)
 
         control = '00000000'
-        lane2 = control + "-" + DATA2 + DATA2 + DATA2 + DATA2 + PRELL + "\n"
+        lane2 = control + "-" + DATA2 + DATA2 + DATA2 + DATA2 + PREH + "\n"
         dump2.write(lane2)
 
         control = '00000000'
@@ -187,11 +189,11 @@ while cont < 3:
         dump1.write(lane1)
 
         control = '00011111'
-        lane2 = control + "-" + PRELH + SOP + IDLE + IDLE + IDLE + IDLE + "\n"
+        lane2 = control + "-" + PREL + SOP + IDLE + IDLE + IDLE + IDLE + "\n"
         dump2.write(lane2)
 
         control = '00000000'
-        lane3 = control + "-" + DATA3 + DATA3 + DATA3 + DATA3 + PRELL + "\n"
+        lane3 = control + "-" + DATA3 + DATA3 + DATA3 + DATA3 + PREH + "\n"
         dump3.write(lane3)
 
     if caseS == '7':
@@ -225,11 +227,11 @@ while cont < 3:
         dump2.write(lane2)
 
         control = '00011111'
-        lane3 = control + "-" + PRELH + SOP + IDLE + IDLE + IDLE + IDLE + "\n"
+        lane3 = control + "-" + PREL + SOP + IDLE + IDLE + IDLE + IDLE + "\n"
         dump3.write(lane3)
 
         control = '00000000'
-        lane0 = control + "-" + DATA0 + DATA0 + DATA0 + DATA0 + PRELL + "\n"
+        lane0 = control + "-" + DATA0 + DATA0 + DATA0 + DATA0 + PREH + "\n"
         dump0.write(lane0)
 
         control = '00000000'
@@ -271,11 +273,11 @@ while cont < 3:
         dump1.write(lane1)
 
         control = '00011111'
-        lane2 = control + "-" + PRELH + SOP + IDLE + IDLE + IDLE + IDLE + "\n"
+        lane2 = control + "-" + PREL + SOP + IDLE + IDLE + IDLE + IDLE + "\n"
         dump2.write(lane2)
 
         control = '00000000'
-        lane3 = control + "-" + DATA3 + DATA3 + DATA3 + DATA3 + PRELL + "\n"
+        lane3 = control + "-" + DATA3 + DATA3 + DATA3 + DATA3 + PREH + "\n"
         dump3.write(lane3)
 
     if caseS == '11':
@@ -309,11 +311,11 @@ while cont < 3:
         dump2.write(lane2)
 
         control = '00011111'
-        lane3 = control + "-" + PRELH + SOP + IDLE + IDLE + IDLE + IDLE + "\n"
+        lane3 = control + "-" + PREL + SOP + IDLE + IDLE + IDLE + IDLE + "\n"
         dump3.write(lane3)
 
         control = '00000000'
-        lane0 = control + "-" + DATA0 + DATA0 + DATA0 + DATA0 + PRELL + "\n"
+        lane0 = control + "-" + DATA0 + DATA0 + DATA0 + DATA0 + PREH + "\n"
         dump0.write(lane0)
 
         control = '00000000'
@@ -351,7 +353,7 @@ while cont < 3:
 
 ########################### ENTRADA DO END ###################################################
 ################################################################################################
-    if caseE == '1':
+    if caseE == '1' or caseS == '9' or caseS == '10' or caseS == '11' or caseS == '12':
         control = '11111111'
         lane0 = control + "-" + IDLE + IDLE + IDLE + IDLE + IDLE + IDLE + IDLE + EOP + "\n"
         dump0.write(lane0)

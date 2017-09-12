@@ -21,12 +21,14 @@ entity control is
     ctrl_delay      : out std_logic_vector( 1 downto 0);
     shift_out       : out std_logic_vector(2 downto 0);
     eop_line_offset : out std_logic_vector(5 downto 0);
+    is_eop          : out std_logic_vector(5 downto 0);
+    is_sop          : out std_logic;
     wen_fifo        : out std_logic
   );
 end entity;
 
 architecture behav_control of control is
-  constant NO_EOP          : std_logic_vector(5 downto 0) := "100000";
+  constant NO_EOP : std_logic_vector(5 downto 0) := "100000";
 
   signal sop_location         : std_logic_vector(3 downto 0);
   signal eop_location         : std_logic_vector(7 downto 0);
@@ -42,13 +44,18 @@ architecture behav_control of control is
   signal wen_fifo_reg_reg     : std_logic;
   signal missed_sop           : std_logic;
   signal missed_sop_reg       : std_logic;
+  signal is_eop_int           : std_logic_vector(5 downto 0);
+  signal is_sop_int           : std_logic;
+  signal is_sop_reg           : std_logic;
+  signal is_eop_reg           : std_logic_vector(5 downto 0);
+  signal is_sop_reg_reg       : std_logic;
+  signal is_eop_reg_reg       : std_logic_vector(5 downto 0);
 
 begin
 
   -- Making things clear:
   -- LANEs from 0 to 7 are the eight bytes for each MII data interface.
   -- WORDs from 0 to 7 are the eight 32bits words for all four MIIs in use
-
 
   sop_finder: process(xgmii_rxc_0, xgmii_rxd_0, xgmii_rxc_1, xgmii_rxd_1,
                       xgmii_rxc_2, xgmii_rxd_2, xgmii_rxc_3, xgmii_rxd_3)
@@ -253,6 +260,12 @@ begin
     end if;
   end process;
 
+  -- Inform fifo if is SOP
+  is_sop_int <= '0' when sop_location = "1000" else '1';
+
+  -- Inform fifo where EOP is
+  is_eop_int <= eop_location(5 downto 0);
+
   -- Process to control fifo write enable
   wen_fifo_proc: process (clk, rst_n)
   begin
@@ -273,7 +286,7 @@ begin
 
       -- EOP: stop writing
       elsif eop_location /= "00100000" and
-            sop_by_byte >= eop_location and shift_calc /= "000"then
+            sop_by_byte >= eop_location and shift_calc /= "000" then
           wen_fifo_reg <= '0';
       elsif eop_location_reg /= "00100000" then
           wen_fifo_reg <= '0';
@@ -306,10 +319,18 @@ begin
     if (rst_n = '0') then
       shift_out_reg <= (others=>'0');
       shift_out_reg_reg <= (others=>'0');
+      is_sop_reg <= '0';
+      is_eop_reg <= (others=>'0');
+      is_sop_reg_reg <= '0';
+      is_eop_reg_reg <= (others=>'0');
     elsif clk'event and clk = '1' then
       shift_out_reg <= shift_out_int;
       shift_out_reg_reg <= shift_out_reg;
       missed_sop_reg <= missed_sop;
+      is_sop_reg <= is_sop_int;
+      is_eop_reg <= is_eop_int;
+      is_sop_reg_reg <= is_sop_reg;
+      is_eop_reg_reg <= is_eop_reg;
     end if;
   end process;
 
@@ -317,5 +338,7 @@ begin
 
   wen_fifo <= wen_fifo_reg_reg;
   shift_out <= shift_out_reg_reg;
+  is_sop <= is_sop_reg_reg;
+  is_eop <= is_eop_reg_reg;
 
 end architecture;

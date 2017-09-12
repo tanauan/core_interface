@@ -18,7 +18,7 @@ entity core_interface is
   --OUTPUTS
       mac_data        : out std_logic_vector(127 downto 0);
       mac_is_sop      : out std_logic;
-      mac_is_eop      : out std_logic_vector(5 downto 0)
+      mac_is_eop      : out std_logic_vector(4 downto 0)
     );
 end entity;
 

@@ -19,7 +19,7 @@ public:
     sc_in<sc_lv<64> > xgmii_rxd_3;
     sc_out<sc_lv<128> > mac_data;
     sc_out<sc_logic> mac_is_sop;
-    sc_out<sc_lv<6> > mac_is_eop;
+    sc_out<sc_lv<5> > mac_is_eop;
 
 
     core_interface(sc_module_name nm, const char* hdl_name)

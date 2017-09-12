@@ -63,6 +63,7 @@ begin
       mem_eop_high <= (others=>(others=>'0'));
       mem_eop_low <= (others=>(others=>'0'));
       mem_sop <= (others=>'0');
+      mem_eop_bv <= (others=>'0');
       w_ptr <= (others=>'0');
     elsif clk_w'event and clk_w = '1' then
         if wen = '1' then                 -- Does not check full, will overwrite
@@ -72,7 +73,7 @@ begin
           if is_eop_in(5) = '0' then
             -- Valid EOP value
             mem_eop_bv(conv_integer(w_ptr)) <= '0';
-            
+
             if is_eop_in(4) = '1' then
               -- EOF is in the higher half
               mem_eop_high(conv_integer(w_ptr)) <= is_eop_in(3 downto 0);

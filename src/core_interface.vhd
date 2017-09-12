@@ -17,8 +17,8 @@ entity core_interface is
       xgmii_rxd_3     : in std_logic_vector(63 downto 0);
   --OUTPUTS
       mac_data        : out std_logic_vector(127 downto 0);
-      mac_is_sop      : out std_logic;
-      mac_is_eop      : out std_logic_vector(4 downto 0)
+      mac_sop      : out std_logic;
+      mac_eop      : out std_logic_vector(4 downto 0)
     );
 end entity;
 
@@ -97,8 +97,8 @@ architecture behav_core_interface of core_interface is
           data_out   => fifo_out,
           is_sop_in  => is_sop_control,
           is_eop_in  => is_eop_control,
-          is_sop_out => mac_is_sop,
-          is_eop_out => mac_is_eop,
+          is_sop_out => mac_sop,
+          is_eop_out => mac_eop,
           wen        => fifo_wen,
           ren        => fifo_ren,
           empty      => fifo_empty,

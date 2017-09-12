@@ -31,6 +31,8 @@ SC_MODULE(Top) {
   sc_signal<sc_lv<64> >  xgmii_rxd_3;
 
   sc_signal<sc_lv<128> > mac_data;
+  sc_signal<sc_lv<5> > mac_eop;
+  sc_signal<sc_logic> mac_sop;
 
 
   core_interface  * core_interface_inst;
@@ -78,11 +80,15 @@ SC_MODULE(Top) {
 	  core_interface_inst->xgmii_rxc_3(xgmii_rxc_3);
 	  core_interface_inst->xgmii_rxd_3(xgmii_rxd_3);
 	  core_interface_inst->mac_data(mac_data);
+    core_interface_inst->mac_sop(mac_sop);
+    core_interface_inst->mac_eop(mac_eop);
 
 	  // dump_output connections
 	  dump_inst->clock(iclock161);
 	  dump_inst->reset_n(reset);
 	  dump_inst->mac_data(mac_data);
+    dump_inst->mac_sop(mac_sop);
+    dump_inst->mac_eop(mac_eop);
 
     SC_METHOD(clock_assign);
     sensitive << clk_156.signal();

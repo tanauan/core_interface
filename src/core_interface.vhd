@@ -16,7 +16,9 @@ entity core_interface is
       xgmii_rxc_3     : in std_logic_vector( 7 downto 0);
       xgmii_rxd_3     : in std_logic_vector(63 downto 0);
   --OUTPUTS
-      mac_data        : out std_logic_vector(127 downto 0)
+      mac_data        : out std_logic_vector(127 downto 0);
+      mac_is_sop      : out std_logic;
+      mac_is_eop      : out std_logic_vector(5 downto 0)
     );
 end entity;
 
@@ -33,6 +35,8 @@ architecture behav_core_interface of core_interface is
     signal fifo_ren            : std_logic;
     signal fifo_empty          : std_logic;
     signal fifo_full           : std_logic;
+    signal is_sop_control      : std_logic;
+    signal is_eop_control      : std_logic_vector(5 downto 0);
 
   begin
 
@@ -50,6 +54,8 @@ architecture behav_core_interface of core_interface is
           ctrl_delay      => ctrl_mux_delay,
           shift_out       => ctrl_shift_reg,
           eop_line_offset => eop_line_offset,
+          is_eop          => is_eop_control,
+          is_sop          => is_sop_control,
           wen_fifo        => fifo_wen
     );
 
@@ -84,15 +90,21 @@ architecture behav_core_interface of core_interface is
     -- fifo_in <= shifter_out & eop_line_offset;
     fifo_in <= shifter_out;
     fifo: entity work.ring_fifo port map(
-          clk_w     => clk_156,
-          clk_r     => clk_312,
-          rst_n     => rst_n,
-          data_in   => fifo_in,
-          data_out  => fifo_out,
-          wen       => fifo_wen,
-          ren       => fifo_ren,
-          empty     => fifo_empty,
-          full      => fifo_full
+          clk_w      => clk_156,
+          clk_r      => clk_312,
+          rst_n      => rst_n,
+          data_in    => fifo_in,
+          data_out   => fifo_out,
+          is_sop_in  => is_sop_control,
+          is_eop_in  => is_eop_control,
+          is_sop_out => mac_is_sop,
+          is_eop_out => mac_is_eop,
+          wen        => fifo_wen,
+          ren        => fifo_ren,
+          empty      => fifo_empty,
+          full       => fifo_full
     );
+
+    mac_data <= fifo_out;
 
 end behav_core_interface;

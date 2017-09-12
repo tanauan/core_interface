@@ -18,6 +18,8 @@ public:
     sc_in<sc_lv<8> > xgmii_rxc_3;
     sc_in<sc_lv<64> > xgmii_rxd_3;
     sc_out<sc_lv<128> > mac_data;
+    sc_out<sc_logic> mac_is_sop;
+    sc_out<sc_lv<6> > mac_is_eop;
 
 
     core_interface(sc_module_name nm, const char* hdl_name)
@@ -33,7 +35,9 @@ public:
        xgmii_rxd_2("xgmii_rxd_2"),
        xgmii_rxc_3("xgmii_rxc_3"),
        xgmii_rxd_3("xgmii_rxd_3"),
-       mac_data("mac_data")
+       mac_data("mac_data"),
+       mac_is_sop("mac_is_sop"),
+       mac_is_eop("mac_is_eop")
     {
         elaborate_foreign_module(hdl_name);
     }

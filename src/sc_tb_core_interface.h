@@ -95,8 +95,8 @@ SC_MODULE(Top) {
 
   ~Top () {
     delete core_interface_inst;
-	delete feed_inst;
-	delete dump_inst;
+	  delete feed_inst;
+	  delete dump_inst;
   }
 
 };

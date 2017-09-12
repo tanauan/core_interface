@@ -272,8 +272,10 @@ begin
         wen_fifo_reg <= '1';
 
       -- EOP: stop writing
+      -- elsif eop_location /= "00100000" and
+      --       sop_by_byte >= eop_location and shift_calc /= "000"then  -- tanauan, gravando um ciclo a mais (1 2)
       elsif eop_location /= "00100000" and
-            sop_by_byte >= eop_location and shift_calc /= "000"then
+            sop_by_byte >= eop_location then
           wen_fifo_reg <= '0';
       elsif eop_location_reg /= "00100000" then
           wen_fifo_reg <= '0';

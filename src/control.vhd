@@ -40,6 +40,9 @@ architecture behav_control of control is
   signal shift_out_reg              : std_logic_vector(2 downto 0);
   signal shift_out_reg_reg          : std_logic_vector(2 downto 0);
   signal ctrl_delay_int             : std_logic_vector( 1 downto 0);
+  signal ctrl_delay_reg             : std_logic_vector( 1 downto 0);
+  signal ctrl_delay_reg_reg         : std_logic_vector( 1 downto 0);
+  signal ctrl_delay_reg_reg_reg     : std_logic_vector( 1 downto 0);
   signal wen_fifo_reg               : std_logic;
   signal wen_fifo_reg_reg           : std_logic;
   signal missed_sop                 : std_logic;
@@ -185,12 +188,6 @@ begin
       end if;
   end process;
 
-  -- When there is SOP/EOP on the last lane, tell shift_reg to use delay_reg
-  -- 00 : Words 6 and 7 bypass delay
-  -- 01 : Word 6 delayed and word 7 bypassed
-  -- 10 : Words 6 and 7 delayed
-  -- 11 : Never happens
-
   ctrl_delay_int <= "01" when (sop_location = "0101" and eop_location /= "00100000") else
                     "10" when (sop_location = "0100" and eop_location /= "00100000") else
                     "00";
@@ -198,14 +195,22 @@ begin
   mux_delay_ctrl: process(clk, rst_n)
   begin
     if rst_n = '0' then
-      ctrl_delay <= (others=>'0');
+      ctrl_delay_reg <= (others=>'0');
+      ctrl_delay_reg_reg <= (others=>'0');
+      ctrl_delay_reg_reg_reg <= (others=>'0');
     elsif clk'event and clk = '1' then
+      ctrl_delay_reg_reg <= ctrl_delay_reg;
+      ctrl_delay_reg_reg_reg <= ctrl_delay_reg_reg;
       if ctrl_delay_int /= "00" then
         -- ctrl_delay_int updated to a valid value
-        ctrl_delay <= ctrl_delay_int;
+        ctrl_delay_reg <= ctrl_delay_int;
+      elsif eop_location /= "00100000" then
+        ctrl_delay_reg <= (others=>'0');
       end if;
     end if;
   end process;
+
+  ctrl_delay <= ctrl_delay_reg_reg_reg;
 
   reg_shift_ctrl: process (sop_location, eop_location)
   begin
@@ -228,7 +233,7 @@ begin
     elsif sop_location /= "1000" and eop_location /= "00100000" then
       case eop_location is
         -- EOP at word 0
-        when x"00" | x"01" | x"02" | x"03" => shift_calc <= sop_location(2 downto 0) + 1;
+        when x"00" | x"01" | x"02" | x"03" => shift_calc <= (others=>'0');
         -- EOP at word 1
         when x"04" | x"05" | x"06" | x"07" => shift_calc <= sop_location(2 downto 0);
         -- EOP at word 2
@@ -294,17 +299,19 @@ begin
 
       -- SOP: start writing
       if (sop_location /= "1000" and sop_location /= "0111" and sop_location /= "0110"
-          and wen_fifo_reg = '0') or missed_sop_reg = '1' then
+          and wen_fifo_reg = '0') or missed_sop_reg = '1' or sop_eop_same_cycle_reg_reg = '1' then
         wen_fifo_reg <= '1';
 
       -- EOP: stop writing
-    elsif eop_location /= "00100000" and sop_by_byte >= eop_location
-          and sop_eop_same_cycle = '0' then
+      elsif eop_location /= "00100000" and sop_by_byte >= eop_location and ctrl_delay_reg_reg = "00" then
+          -- and sop_eop_same_cycle = '0' then
           -- Somente baixa o wen se nao aconteceu sop_eop_same_cycle
           wen_fifo_reg <= '0';
-      elsif eop_location_reg /= "00100000" and sop_eop_same_cycle_reg = '0' then
+      elsif eop_location_reg /= "00100000" then
+          -- and sop_eop_same_cycle_reg = '0' then
           wen_fifo_reg <= '0';
-      elsif eop_location_reg_reg /= "00100000" and sop_eop_same_cycle_reg_reg = '0' then
+      elsif eop_location_reg_reg /= "00100000" then
+            -- and sop_eop_same_cycle_reg_reg = '0' then
           wen_fifo_reg <= '0';
       end if;
 

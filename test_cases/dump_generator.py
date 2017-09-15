@@ -92,7 +92,7 @@ while cont_idle < 2:
 
     cont_idle += 1
 
-if caseS == '9' or caseS == '10' or caseS == '11':
+if caseS == '9' or caseS == '10' or caseS == '11' or caseS == '12':
     control = '00000001'
     lane0 = control + "-" + PRE + SOP + "\n"
     dump0.write(lane0)
@@ -367,13 +367,23 @@ while cont < 3:
         dump3.write(lane3)
 
     if caseS == '12':
-        control = '00000000'
-        lane0 = control + "-" + DATA0 + DATA0 + DATA0 + DATA0 + DATA0 + DATA0 + DATA0 + DATA0 + "\n"
-        dump0.write(lane0)
+        if cont > 0:
+            control = '11111111'
+            lane0 = control + "-" + IDLE + IDLE + IDLE + IDLE + IDLE + IDLE + IDLE + IDLE + "\n"
+            dump0.write(lane0)
 
-        control = '11110000'
-        lane1 = control + "-" + IDLE + IDLE + IDLE + EOP + DATA1 + DATA1 + DATA1 + DATA1 + "\n"
-        dump1.write(lane1)
+            control = '11111111'
+            lane1 = control + "-" + IDLE + IDLE + IDLE + IDLE + IDLE + IDLE + IDLE + IDLE + "\n"
+            dump1.write(lane1)
+
+        else:
+            control = '00000000'
+            lane0 = control + "-" + DATA0 + DATA0 + DATA0 + DATA0 + DATA0 + DATA0 + DATA0 + DATA0 + "\n"
+            dump0.write(lane0)
+
+            control = '11110000'
+            lane1 = control + "-" + IDLE + IDLE + IDLE + EOP + DATA1 + DATA1 + DATA1 + DATA1 + "\n"
+            dump1.write(lane1)
 
         control = '11111111'
         lane2 = control + "-" + IDLE + IDLE + IDLE + IDLE + IDLE + IDLE + IDLE + IDLE + "\n"
@@ -558,7 +568,7 @@ while cont < 3:
         lane3 = control + "-" + IDLE + IDLE + IDLE + EOP + DATA3 + DATA3 + DATA3 + DATA3 + "\n"
         dump3.write(lane3)
 
-#####################  ROTINA DE IDLE FINAL ###############################################
+#####################  ROTINA DE IDLE FINAL ######################################na#########
 #############################################################################################
     cont_idle = 0
     while cont_idle < 3:

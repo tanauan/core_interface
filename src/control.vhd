@@ -48,6 +48,7 @@ architecture behav_control of control is
   signal missed_sop                 : std_logic;
   signal missed_sop_reg             : std_logic;
   signal sop_eop_same_cycle         : std_logic;
+  signal sop7_eop_same_cycle         : std_logic;
   signal sop_eop_same_cycle_reg     : std_logic;
   signal sop_eop_same_cycle_reg_reg : std_logic;
   signal sop_eop_packet             : std_logic;
@@ -240,7 +241,7 @@ begin
         -- EOP at word 2
         when x"08" | x"09" | x"0A" | x"0B" => shift_calc <= (others=>'0');
         -- EOP at word 3
-        when x"0C" | x"0D" | x"0E" | x"0F" => shift_calc <= (others=>'0');
+        when x"0C" | x"0D" | x"0E" | x"0F" => shift_calc <= "001";
         -- EOP at word 4
         when x"10" | x"11" | x"12" | x"13" => shift_calc <= (sop_location(2 downto 0) + 1) - 4;
         -- EOP at word 5
@@ -279,6 +280,8 @@ begin
   -- Inform process that a SOP and EOP happened on the same cycle
   sop_eop_same_cycle <= '1' when sop_location /= "1000" and eop_location /= "00100000" else
                         '0';
+  sop7_eop_same_cycle <= '1' when (sop_location /= "1000" and sop_location /= "0111") and eop_location /= "00100000" else
+                        '0';
 
   -- Process to control fifo write enable
   wen_fifo_proc: process (clk, rst_n)
@@ -300,7 +303,7 @@ begin
       sop_eop_same_cycle_reg_reg <= sop_eop_same_cycle_reg;
 
       if eop_location /= "00100000" then
-        sop_eop_packet <= sop_eop_same_cycle;
+        sop_eop_packet <= sop7_eop_same_cycle;
       end if;
 
       -- SOP: start writing
@@ -314,10 +317,8 @@ begin
           -- Somente baixa o wen se nao usou reg_delay sop_eop_same_cycle
           wen_fifo_reg <= '0';
       elsif eop_location_reg /= "00100000" then
-          -- and sop_eop_same_cycle_reg = '0' then
           wen_fifo_reg <= '0';
       elsif eop_location_reg_reg /= "00100000" then
-            -- and sop_eop_same_cycle_reg_reg = '0' then
           wen_fifo_reg <= '0';
       end if;
 

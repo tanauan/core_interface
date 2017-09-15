@@ -30,26 +30,29 @@ end entity;
 architecture behav_control of control is
   constant NO_EOP : std_logic_vector(5 downto 0) := "100000";
 
-  signal sop_location         : std_logic_vector(3 downto 0);
-  signal eop_location         : std_logic_vector(7 downto 0);
-  signal sop_by_byte          : std_logic_vector(7 downto 0);
-  signal eop_location_reg     : std_logic_vector(7 downto 0);
-  signal eop_location_reg_reg : std_logic_vector(7 downto 0);
-  signal shift_calc           : std_logic_vector(2 downto 0);
-  signal shift_out_int        : std_logic_vector(2 downto 0);
-  signal shift_out_reg        : std_logic_vector(2 downto 0);
-  signal shift_out_reg_reg    : std_logic_vector(2 downto 0);
-  signal ctrl_delay_int       : std_logic_vector( 1 downto 0);
-  signal wen_fifo_reg         : std_logic;
-  signal wen_fifo_reg_reg     : std_logic;
-  signal missed_sop           : std_logic;
-  signal missed_sop_reg       : std_logic;
-  signal is_eop_int           : std_logic_vector(5 downto 0);
-  signal is_sop_int           : std_logic;
-  signal is_sop_reg           : std_logic;
-  signal is_eop_reg           : std_logic_vector(5 downto 0);
-  signal is_sop_reg_reg       : std_logic;
-  signal is_eop_reg_reg       : std_logic_vector(5 downto 0);
+  signal sop_location               : std_logic_vector(3 downto 0);
+  signal eop_location               : std_logic_vector(7 downto 0);
+  signal sop_by_byte                : std_logic_vector(7 downto 0);
+  signal eop_location_reg           : std_logic_vector(7 downto 0);
+  signal eop_location_reg_reg       : std_logic_vector(7 downto 0);
+  signal shift_calc                 : std_logic_vector(2 downto 0);
+  signal shift_out_int              : std_logic_vector(2 downto 0);
+  signal shift_out_reg              : std_logic_vector(2 downto 0);
+  signal shift_out_reg_reg          : std_logic_vector(2 downto 0);
+  signal ctrl_delay_int             : std_logic_vector( 1 downto 0);
+  signal wen_fifo_reg               : std_logic;
+  signal wen_fifo_reg_reg           : std_logic;
+  signal missed_sop                 : std_logic;
+  signal missed_sop_reg             : std_logic;
+  signal sop_eop_same_cycle         : std_logic;
+  signal sop_eop_same_cycle_reg     : std_logic;
+  signal sop_eop_same_cycle_reg_reg : std_logic;
+  signal is_eop_int                 : std_logic_vector(5 downto 0);
+  signal is_sop_int                 : std_logic;
+  signal is_sop_reg                 : std_logic;
+  signal is_eop_reg                 : std_logic_vector(5 downto 0);
+  signal is_sop_reg_reg             : std_logic;
+  signal is_eop_reg_reg             : std_logic_vector(5 downto 0);
 
 begin
 
@@ -198,6 +201,7 @@ begin
       ctrl_delay <= (others=>'0');
     elsif clk'event and clk = '1' then
       if ctrl_delay_int /= "00" then
+        -- ctrl_delay_int updated to a valid value
         ctrl_delay <= ctrl_delay_int;
       end if;
     end if;
@@ -266,6 +270,10 @@ begin
   -- Inform fifo where EOP is
   is_eop_int <= eop_location(5 downto 0);
 
+  -- Inform process that a SOP and EOP happened on the same cycle
+  sop_eop_same_cycle <= '1' when sop_location /= "1000" and eop_location /= "00100000" else
+                        '0';
+
   -- Process to control fifo write enable
   wen_fifo_proc: process (clk, rst_n)
   begin
@@ -274,10 +282,15 @@ begin
       wen_fifo_reg_reg <= '0';
       eop_location_reg <= (others=>'0');
       eop_location_reg_reg <= (others=>'0');
+      sop_eop_same_cycle_reg <= '0';
+      sop_eop_same_cycle_reg_reg <= '0';
+
     elsif clk'event and clk = '1' then
       wen_fifo_reg_reg <= wen_fifo_reg;
       eop_location_reg <= eop_location;
       eop_location_reg_reg <= eop_location_reg;
+      sop_eop_same_cycle_reg <= sop_eop_same_cycle;
+      sop_eop_same_cycle_reg_reg <= sop_eop_same_cycle_reg;
 
       -- SOP: start writing
       if (sop_location /= "1000" and sop_location /= "0111" and sop_location /= "0110"
@@ -285,11 +298,13 @@ begin
         wen_fifo_reg <= '1';
 
       -- EOP: stop writing
-      elsif eop_location /= "00100000" and sop_by_byte >= eop_location then
+    elsif eop_location /= "00100000" and sop_by_byte >= eop_location
+          and sop_eop_same_cycle = '0' then
+          -- Somente baixa o wen se nao aconteceu sop_eop_same_cycle
           wen_fifo_reg <= '0';
-      elsif eop_location_reg /= "00100000" then
+      elsif eop_location_reg /= "00100000" and sop_eop_same_cycle_reg = '0' then
           wen_fifo_reg <= '0';
-      elsif eop_location_reg_reg /= "00100000" then
+      elsif eop_location_reg_reg /= "00100000" and sop_eop_same_cycle_reg_reg = '0' then
           wen_fifo_reg <= '0';
       end if;
 

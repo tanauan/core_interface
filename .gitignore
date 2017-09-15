@@ -2,4 +2,4 @@ work/*
 work/_*
 vsim.wlf
 transcript
-wave.do
+wave*

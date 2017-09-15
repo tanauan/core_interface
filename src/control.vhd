@@ -50,6 +50,7 @@ architecture behav_control of control is
   signal sop_eop_same_cycle         : std_logic;
   signal sop_eop_same_cycle_reg     : std_logic;
   signal sop_eop_same_cycle_reg_reg : std_logic;
+  signal sop_eop_packet             : std_logic;
   signal is_eop_int                 : std_logic_vector(5 downto 0);
   signal is_sop_int                 : std_logic;
   signal is_sop_reg                 : std_logic;
@@ -235,9 +236,9 @@ begin
         -- EOP at word 0
         when x"00" | x"01" | x"02" | x"03" => shift_calc <= (others=>'0');
         -- EOP at word 1
-        when x"04" | x"05" | x"06" | x"07" => shift_calc <= sop_location(2 downto 0);
+        when x"04" | x"05" | x"06" | x"07" => shift_calc <= (others=>'0');
         -- EOP at word 2
-        when x"08" | x"09" | x"0A" | x"0B" => shift_calc <= (sop_location(2 downto 0) + 1) - 2;
+        when x"08" | x"09" | x"0A" | x"0B" => shift_calc <= (others=>'0');
         -- EOP at word 3
         when x"0C" | x"0D" | x"0E" | x"0F" => shift_calc <= (sop_location(2 downto 0) + 1) - 3;
         -- EOP at word 4
@@ -289,6 +290,7 @@ begin
       eop_location_reg_reg <= (others=>'0');
       sop_eop_same_cycle_reg <= '0';
       sop_eop_same_cycle_reg_reg <= '0';
+      sop_eop_packet <= '0';
 
     elsif clk'event and clk = '1' then
       wen_fifo_reg_reg <= wen_fifo_reg;
@@ -297,15 +299,19 @@ begin
       sop_eop_same_cycle_reg <= sop_eop_same_cycle;
       sop_eop_same_cycle_reg_reg <= sop_eop_same_cycle_reg;
 
+      if eop_location /= "00100000" then
+        sop_eop_packet <= sop_eop_same_cycle;
+      end if;
+
       -- SOP: start writing
       if (sop_location /= "1000" and sop_location /= "0111" and sop_location /= "0110"
           and wen_fifo_reg = '0') or missed_sop_reg = '1' or sop_eop_same_cycle_reg_reg = '1' then
         wen_fifo_reg <= '1';
 
       -- EOP: stop writing
-      elsif eop_location /= "00100000" and sop_by_byte >= eop_location and ctrl_delay_reg_reg = "00" then
-          -- and sop_eop_same_cycle = '0' then
-          -- Somente baixa o wen se nao aconteceu sop_eop_same_cycle
+      -- elsif eop_location /= "00100000" and sop_by_byte >= eop_location and ctrl_delay_reg_reg = "00" then
+      elsif eop_location /= "00100000" and sop_by_byte >= eop_location and sop_eop_packet = '0' then
+          -- Somente baixa o wen se nao usou reg_delay sop_eop_same_cycle
           wen_fifo_reg <= '0';
       elsif eop_location_reg /= "00100000" then
           -- and sop_eop_same_cycle_reg = '0' then

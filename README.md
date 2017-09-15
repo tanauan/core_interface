@@ -58,4 +58,7 @@ dump/
 
 ## Usage
 1. Set the desired test case in the run.do script by altering the parameter passed to dump_generator.py
-2. Run "do run.do"
+  For example, dump_generator.py 1 5 means SOP at first word (PCS 0 MII) and EOP at fith word (PCS 2 MII). 
+2. Run "do run.do" on Modelsim.
+
+More instructions in the run.do and dump_generator.py.

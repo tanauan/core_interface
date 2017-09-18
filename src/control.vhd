@@ -314,6 +314,9 @@ begin
           and wen_fifo_reg = '0') or missed_sop_reg = '1' or sop_eop_same_cycle_reg_reg = '1' then
         wen_fifo_reg <= '1';
 
+      elsif sop_eop_same_cycle_reg = '1' and sop7_eop_same_cycle_reg = '1' then
+        wen_fifo_reg <= '1';
+
       -- EOP: stop writing
       -- elsif eop_location /= "00100000" and sop_by_byte >= eop_location and ctrl_delay_reg_reg = "00" then
       elsif eop_location /= "00100000" and sop_by_byte >= eop_location and sop_eop_packet = '0' then

@@ -48,7 +48,8 @@ architecture behav_control of control is
   signal missed_sop                 : std_logic;
   signal missed_sop_reg             : std_logic;
   signal sop_eop_same_cycle         : std_logic;
-  signal sop7_eop_same_cycle         : std_logic;
+  signal sop7_eop_same_cycle        : std_logic;
+  signal sop7_eop_same_cycle_reg    : std_logic;
   signal sop_eop_same_cycle_reg     : std_logic;
   signal sop_eop_same_cycle_reg_reg : std_logic;
   signal sop_eop_packet             : std_logic;
@@ -293,6 +294,7 @@ begin
       eop_location_reg_reg <= (others=>'0');
       sop_eop_same_cycle_reg <= '0';
       sop_eop_same_cycle_reg_reg <= '0';
+      sop7_eop_same_cycle_reg <= '0';
       sop_eop_packet <= '0';
 
     elsif clk'event and clk = '1' then
@@ -301,6 +303,7 @@ begin
       eop_location_reg_reg <= eop_location_reg;
       sop_eop_same_cycle_reg <= sop_eop_same_cycle;
       sop_eop_same_cycle_reg_reg <= sop_eop_same_cycle_reg;
+      sop7_eop_same_cycle_reg <= sop7_eop_same_cycle;
 
       if eop_location /= "00100000" then
         sop_eop_packet <= sop7_eop_same_cycle;
@@ -353,7 +356,9 @@ begin
       is_eop_reg_reg <= (others=>'0');
     elsif clk'event and clk = '1' then
       shift_out_reg <= shift_out_int;
-      if sop_eop_same_cycle_reg = '0' then
+      if sop_eop_same_cycle_reg = '1' and sop7_eop_same_cycle_reg = '0' then
+        shift_out_reg_reg <= shift_out_reg_reg;
+      else
         shift_out_reg_reg <= shift_out_reg;
       end if;
       missed_sop_reg <= missed_sop;

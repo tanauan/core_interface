@@ -353,7 +353,9 @@ begin
       is_eop_reg_reg <= (others=>'0');
     elsif clk'event and clk = '1' then
       shift_out_reg <= shift_out_int;
-      shift_out_reg_reg <= shift_out_reg;
+      if sop_eop_same_cycle_reg = '0' then
+        shift_out_reg_reg <= shift_out_reg;
+      end if;
       missed_sop_reg <= missed_sop;
       is_sop_reg <= is_sop_int;
       is_eop_reg <= is_eop_int;

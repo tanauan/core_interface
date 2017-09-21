@@ -32,7 +32,8 @@ vlib work
 #   case 12 = end lane1H start lane3H
 ################################
 
-exec python ./test_cases/dump_generator.py 2 5
+exec python ./test_cases/dump_generator.py 4 1
+exec python ./test_cases/out_generator.py 4 1
 
 #########################################################################
 
@@ -56,3 +57,5 @@ vsim -novopt work.Top -t 1ps
 
 do wave.do
 run 1000 ns
+
+exec python ./test_cases/scoreboard.py

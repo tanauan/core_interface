@@ -59,6 +59,7 @@ architecture behav_control of control is
   signal is_eop_reg                 : std_logic_vector(5 downto 0);
   signal is_sop_reg_reg             : std_logic;
   signal is_eop_reg_reg             : std_logic_vector(5 downto 0);
+  signal eop_location_calc          : std_logic_vector(5 downto 0);
 
 begin
 
@@ -274,7 +275,6 @@ begin
 
   -- Inform fifo if is SOP
   is_sop_int <= '0' when sop_location = "1000" else '1';
-
   -- Inform fifo where EOP is
   is_eop_int <= eop_location(5 downto 0);
 
@@ -284,8 +284,55 @@ begin
   sop7_eop_same_cycle <= '1' when (sop_location /= "1000" and sop_location /= "0111") and eop_location /= "00100000" else
                         '0';
 
+  calculate_new_eop: process(rst_n, eop_location)
+begin
+  if rst_n = '0' then
+    eop_location_calc <= "100000";
+  else
+    eop_location_calc(5) <= eop_location(5);  -- atua como sinal de controle, indicando q há EOP se '0'
+    if (eop_location(5) = '0') then
+      case shift_out_reg_reg is
+        when "001" =>if (eop_location(4 downto 0) < "0100") then
+                        eop_location_calc(4 downto 0) <= 32 - (4 - eop_location(4 downto 0));
+                      else eop_location_calc(4 downto 0) <= eop_location(4 downto 0) - 4;
+                    end if;
+        when "010" =>if (eop_location(4 downto 0) < 8) then
+                        eop_location_calc(4 downto 0) <= 32 - (8 - eop_location(4 downto 0));
+                      else eop_location_calc(4 downto 0) <= eop_location(4 downto 0) - 8;
+                    end if;
+        when "011" =>if (eop_location(4 downto 0) < 12) then
+                        eop_location_calc(4 downto 0) <= 32 - (12 - eop_location(4 downto 0));
+                      else eop_location_calc(4 downto 0) <= eop_location(4 downto 0) - 12;
+                    end if;
+        when "100" =>if (eop_location(4 downto 0) < 16) then
+                        eop_location_calc(4 downto 0) <= 32 - (16 - eop_location(4 downto 0));
+                      else eop_location_calc(4 downto 0) <= eop_location(4 downto 0) - 16;
+                    end if;
+        when "101" =>if (eop_location(4 downto 0) < 20) then
+                        eop_location_calc(4 downto 0) <= 32 - (20 - eop_location(4 downto 0));
+                      else eop_location_calc(4 downto 0) <= eop_location(4 downto 0) - 20;
+                    end if;
+        when "110" =>if (eop_location(4 downto 0) < 24) then
+                          eop_location_calc(4 downto 0) <= 32 - (24 - eop_location(4 downto 0));
+                      else eop_location_calc(4 downto 0) <= eop_location(4 downto 0) - 24;
+                    end if;
+        when "111" =>if (eop_location(4 downto 0) < 28) then
+                      eop_location_calc(4 downto 0) <= 32 - (28 - eop_location(4 downto 0));
+                    else eop_location_calc(4 downto 0) <= eop_location(4 downto 0) - 28;
+                  end if;
+        when others => NULL;
+      end case;
+    end if;
+  end if;
+end process;
+
+--propagate_eop_location_calc: process(rst_n,clk)
+--begin
+--  if rst_n = '0' then
+--    eop_
+
   -- Process to control fifo write enable
-  wen_fifo_proc: process (clk, rst_n)
+  wen_fifo_proc: process(clk, rst_n)
   begin
     if rst_n = '0' then
       wen_fifo_reg <= '0';

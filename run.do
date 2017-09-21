@@ -23,6 +23,18 @@ vlib work
 #   case 6 = end lane2H
 #   case 7 = end lane3L
 #   case 8 = end lane3H
+#   case 13 = end on 2nd byte of PCS0
+#   case 14 = end on 3rd byte of PCS0
+#   case 15 = end on 4th byte of PCS0
+#   case 16 = end on 2nd byte of PCS1
+#   case 17 = end on 3rd byte of PCS1
+#   case 18 = end on 4th byte of PCS1
+#   case 19 = end on 2nd byte of PCS2
+#   case 20 = end on 3rd byte of PCS2
+#   case 21 = end on 4th byte of PCS2
+#   case 22 = end on 2nd byte of PCS3
+#   case 23 = end on 3rd byte of PCS3
+#   case 24 = end on 4th byte of PCS3
 ################################
 
 ##  ARGUMENTO 1 ################
@@ -32,8 +44,8 @@ vlib work
 #   case 12 = end lane1H start lane3H
 ################################
 
-exec python ./test_cases/dump_generator.py 4 1
-exec python ./test_cases/out_generator.py 4 1
+exec python ./test_cases/dump_generator.py 6 13
+#exec python ./test_cases/out_generator.py 4 1
 
 #########################################################################
 
@@ -55,7 +67,7 @@ sccom -link -B/usr/bin/
 
 vsim -novopt work.Top -t 1ps
 
-do wave.do
+do wave_luiz.do
 run 1000 ns
 
 exec python ./test_cases/scoreboard.py

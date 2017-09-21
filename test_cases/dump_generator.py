@@ -33,6 +33,24 @@ cont = 0
 #   case 6 = end lane2H
 #   case 7 = end lane3L
 #   case 8 = end lane3H
+#   case 13 = end on 2nd byte of PCS0
+#   case 14 = end on 3rd byte of PCS0
+#   case 15 = end on 4th byte of PCS0
+#   case 13 = end on 6nd byte of PCS0
+#   case 14 = end on 7rd byte of PCS0
+#   case 15 = end on 8th byte of PCS0
+#   case 16 = end on 2nd byte of PCS1
+#   case 17 = end on 3rd byte of PCS1
+#   case 18 = end on 4th byte of PCS1
+#   case 16 = end on 2nd byte of PCS1
+#   case 17 = end on 3rd byte of PCS1
+#   case 18 = end on 4th byte of PCS1
+#   case 19 = end on 2nd byte of PCS2
+#   case 20 = end on 3rd byte of PCS2
+#   case 21 = end on 4th byte of PCS2
+#   case 22 = end on 2nd byte of PCS3
+#   case 23 = end on 3rd byte of PCS3
+#   case 24 = end on 4th byte of PCS3
 ################################
 
 ##  ARGUMENTO 1 #################
@@ -566,6 +584,40 @@ while cont < 3:
 
         control = '11110000'
         lane3 = control + "-" + IDLE + IDLE + IDLE + EOP + DATA3 + DATA3 + DATA3 + DATA3 + "\n"
+        dump3.write(lane3)
+
+    if caseE == '13':
+        control = '11111110'
+        lane0 = control + "-" + IDLE + IDLE + IDLE + IDLE + IDLE + IDLE + EOP + DATA0 + "\n"
+        dump0.write(lane0)
+
+        control = '11111111'
+        lane1 = control + "-" + IDLE + IDLE + IDLE + IDLE + IDLE + IDLE + IDLE + IDLE + "\n"
+        dump1.write(lane1)
+
+        control = '11111111'
+        lane2 = control + "-" + IDLE + IDLE + IDLE + IDLE + IDLE + IDLE + IDLE + IDLE + "\n"
+        dump2.write(lane2)
+
+        control = '11111111'
+        lane3 = control + "-" + IDLE + IDLE + IDLE + IDLE + IDLE + IDLE + IDLE + IDLE + "\n"
+        dump3.write(lane3)
+
+    if caseE == '14':
+        control = '11111100'
+        lane0 = control + "-" + IDLE + IDLE + IDLE + IDLE + IDLE + EOP + DATA0 + DATA0 + "\n"
+        dump0.write(lane0)
+
+        control = '11111111'
+        lane1 = control + "-" + IDLE + IDLE + IDLE + IDLE + IDLE + IDLE + IDLE + IDLE + "\n"
+        dump1.write(lane1)
+
+        control = '11111111'
+        lane2 = control + "-" + IDLE + IDLE + IDLE + IDLE + IDLE + IDLE + IDLE + IDLE + "\n"
+        dump2.write(lane2)
+
+        control = '11111111'
+        lane3 = control + "-" + IDLE + IDLE + IDLE + IDLE + IDLE + IDLE + IDLE + IDLE + "\n"
         dump3.write(lane3)
 
 #####################  ROTINA DE IDLE FINAL ######################################na#########

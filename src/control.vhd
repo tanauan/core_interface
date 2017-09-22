@@ -30,6 +30,7 @@ architecture behav_control of control is
   constant NO_EOP : std_logic_vector(5 downto 0) := "100000";
 
   signal sop_location               : std_logic_vector(3 downto 0);
+  signal sop_location_reg           : std_logic_vector(3 downto 0);
   signal eop_location               : std_logic_vector(7 downto 0);
   signal sop_by_byte                : std_logic_vector(7 downto 0);
   signal eop_location_reg           : std_logic_vector(7 downto 0);
@@ -272,7 +273,9 @@ begin
 
   -- Inform fifo if is SOP
   is_sop_int <= '0' when sop_location = "1000" else '1';
-  -- Inform fifo where EOP is
+  -- is_sop_int <= '0' when sop_location = "1000" and sop_eop_same_cycle = '0' else
+  --               '1';
+  -- Inform fifo where  EOP is
 
   -- Inform process that a SOP and EOP happened on the same cycle
   sop_eop_same_cycle <= '1' when sop_location /= "1000" and eop_location /= "00100000" else
@@ -409,16 +412,35 @@ eop_location_out <= eop_location_calc_reg_reg;
       shift_out_reg_reg <= (others=>'0');
       is_sop_reg <= '0';
       is_sop_reg_reg <= '0';
+      sop_location_reg <= (others=>'0');
     elsif clk'event and clk = '1' then
       shift_out_reg <= shift_out_int;
+      sop_location_reg <= sop_location;
+      missed_sop_reg <= missed_sop;
+
+      if sop_location(2 downto 0) >= "100" and eop_location /= "00100000" then
+        is_sop_reg <= '0';
+      else
+        is_sop_reg <= is_sop_int;
+        if sop_location_reg(2 downto 0) >= "100" and eop_location_reg /= "00100000" then
+          is_sop_reg <= '1';
+        end if;
+      end if;
+
+      if sop_eop_same_cycle_reg = '1' then
+        is_sop_reg_reg <= is_sop_reg_reg;
+      else
+        is_sop_reg_reg <= is_sop_reg;
+      end if;
+
       if sop_eop_same_cycle_reg = '1' and sop7_eop_same_cycle_reg = '0' then
         shift_out_reg_reg <= shift_out_reg_reg;
+        is_sop_reg_reg <= is_sop_reg_reg;
       else
         shift_out_reg_reg <= shift_out_reg;
+        is_sop_reg_reg <= is_sop_reg;
       end if;
-      missed_sop_reg <= missed_sop;
-      is_sop_reg <= is_sop_int;
-      is_sop_reg_reg <= is_sop_reg;
+
     end if;
   end process;
 

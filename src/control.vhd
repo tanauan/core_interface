@@ -418,11 +418,11 @@ eop_location_out <= eop_location_calc_reg_reg;
       sop_location_reg <= sop_location;
       missed_sop_reg <= missed_sop;
 
-      if sop_location(2 downto 0) >= "100" and eop_location /= "00100000" then
+      if (sop_location(2 downto 0) >= "100" and eop_location /= "00100000") or sop_location = "0110" or sop_location = "0111" then
         is_sop_reg <= '0';
       else
         is_sop_reg <= is_sop_int;
-        if sop_location_reg(2 downto 0) >= "100" and eop_location_reg /= "00100000" then
+        if (sop_location_reg(2 downto 0) >= "100" and eop_location_reg /= "00100000") or sop_location_reg = "0110" or sop_location_reg = "0111" then
           is_sop_reg <= '1';
         end if;
       end if;

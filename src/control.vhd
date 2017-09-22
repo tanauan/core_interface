@@ -343,8 +343,9 @@ begin
 end process;
 
 eop_location_out <= eop_location_calc_reg_reg;
+
   -- Process to control fifo write enable
-  wen_fifo_proc: process(clk, rst_n)
+  wen_fifo_proc: process (clk, rst_n)
   begin
     if rst_n = '0' then
       wen_fifo_reg <= '0';
@@ -377,12 +378,6 @@ eop_location_out <= eop_location_calc_reg_reg;
         wen_fifo_reg <= '1';
 
       -- EOP: stop writing
-      -- elsif eop_location /= "00100000" and sop_by_byte >= eop_location and ctrl_delay_reg_reg = "00" then
-      elsif eop_location /= "00100000" and sop_by_byte >= eop_location and sop_eop_packet = '0' then
-          -- Somente baixa o wen se nao usou reg_delay sop_eop_same_cycle
-          wen_fifo_reg <= '0';
-      elsif eop_location_reg /= "00100000" then
-          wen_fifo_reg <= '0';
       elsif eop_location_reg_reg /= "00100000" then
           wen_fifo_reg <= '0';
       end if;

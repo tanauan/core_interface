@@ -44,7 +44,7 @@ vlib work
 #   case 12 = end lane1H start lane3H
 ################################
 
-exec python ./test_cases/dump_generator.py 6 13
+exec python ./test_cases/dump_generator.py 9 0
 #exec python ./test_cases/out_generator.py 4 1
 
 #########################################################################

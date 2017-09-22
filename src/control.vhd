@@ -20,9 +20,8 @@ entity control is
     xgmii_rxd_3     : in  std_logic_vector(63 downto 0);
     ctrl_delay      : out std_logic_vector( 1 downto 0);
     shift_out       : out std_logic_vector(2 downto 0);
-    eop_line_offset : out std_logic_vector(5 downto 0);
-    is_eop          : out std_logic_vector(5 downto 0);
     is_sop          : out std_logic;
+    eop_location_out: out std_logic_vector(5 downto 0);
     wen_fifo        : out std_logic
   );
 end entity;
@@ -53,14 +52,12 @@ architecture behav_control of control is
   signal sop_eop_same_cycle_reg     : std_logic;
   signal sop_eop_same_cycle_reg_reg : std_logic;
   signal sop_eop_packet             : std_logic;
-  signal is_eop_int                 : std_logic_vector(5 downto 0);
   signal is_sop_int                 : std_logic;
   signal is_sop_reg                 : std_logic;
-  signal is_eop_reg                 : std_logic_vector(5 downto 0);
   signal is_sop_reg_reg             : std_logic;
-  signal is_eop_reg_reg             : std_logic_vector(5 downto 0);
   signal eop_location_calc          : std_logic_vector(5 downto 0);
-
+  signal eop_location_calc_reg      : std_logic_vector(5 downto 0);
+  signal eop_location_calc_reg_reg  : std_logic_vector(5 downto 0);
 begin
 
   -- Making things clear:
@@ -276,7 +273,6 @@ begin
   -- Inform fifo if is SOP
   is_sop_int <= '0' when sop_location = "1000" else '1';
   -- Inform fifo where EOP is
-  is_eop_int <= eop_location(5 downto 0);
 
   -- Inform process that a SOP and EOP happened on the same cycle
   sop_eop_same_cycle <= '1' when sop_location /= "1000" and eop_location /= "00100000" else
@@ -292,6 +288,12 @@ begin
     eop_location_calc(5) <= eop_location(5);  -- atua como sinal de controle, indicando q há EOP se '0'
     if (eop_location(5) = '0') then
       case shift_out_reg_reg is
+        when "000" => if ctrl_delay_reg_reg_reg = "01" then
+                        eop_location_calc(4 downto 0) <= eop_location(4 downto 0) + 4;
+                      elsif ctrl_delay_reg_reg_reg = "10" then
+                      eop_location_calc(4 downto 0) <= eop_location(4 downto 0) + 8;
+                    else eop_location_calc(4 downto 0) <= eop_location(4 downto 0);
+                      end if;
         when "001" =>if (eop_location(4 downto 0) < "0100") then
                         eop_location_calc(4 downto 0) <= 32 - (4 - eop_location(4 downto 0));
                       else eop_location_calc(4 downto 0) <= eop_location(4 downto 0) - 4;
@@ -326,11 +328,21 @@ begin
   end if;
 end process;
 
---propagate_eop_location_calc: process(rst_n,clk)
---begin
---  if rst_n = '0' then
---    eop_
+propagate_eop_location_calc: process(rst_n,clk)
+begin
+  if rst_n = '0' then
+    eop_location_calc_reg <= "100000";
+    eop_location_calc_reg_reg <= "100000";
+  elsif clk'event and clk='1' then
+      eop_location_calc_reg <= eop_location_calc;
+      if ctrl_delay_reg_reg_reg /= "00" then
+        eop_location_calc_reg_reg <= eop_location_calc_reg;
+      else eop_location_calc_reg_reg <= eop_location_calc;
+    end if;
+  end if;
+end process;
 
+eop_location_out <= eop_location_calc_reg_reg;
   -- Process to control fifo write enable
   wen_fifo_proc: process(clk, rst_n)
   begin
@@ -401,9 +413,7 @@ end process;
       shift_out_reg <= (others=>'0');
       shift_out_reg_reg <= (others=>'0');
       is_sop_reg <= '0';
-      is_eop_reg <= (others=>'0');
       is_sop_reg_reg <= '0';
-      is_eop_reg_reg <= (others=>'0');
     elsif clk'event and clk = '1' then
       shift_out_reg <= shift_out_int;
       if sop_eop_same_cycle_reg = '1' and sop7_eop_same_cycle_reg = '0' then
@@ -413,17 +423,13 @@ end process;
       end if;
       missed_sop_reg <= missed_sop;
       is_sop_reg <= is_sop_int;
-      is_eop_reg <= is_eop_int;
       is_sop_reg_reg <= is_sop_reg;
-      is_eop_reg_reg <= is_eop_reg;
     end if;
   end process;
 
-  eop_line_offset <= eop_location(5 downto 0) when wen_fifo_reg = '1' else NO_EOP;
 
   wen_fifo <= wen_fifo_reg_reg;
   shift_out <= shift_out_reg_reg;
   is_sop <= is_sop_reg_reg;
-  is_eop <= is_eop_reg_reg;
 
 end architecture;
